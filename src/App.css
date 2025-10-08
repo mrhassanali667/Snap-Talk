@@ -1,1 +1,25 @@
-@import "tailwindcss" ;
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* @theme {
+    --public-sans: "Public Sans", sans-serif;
+}
+
+@font-face {
+    font-family: Oswald;
+    font-style: normal;
+    font-weight: 200 700;
+    font-display: swap;
+    src: url("/fonts/Oswald.woff2") format("woff2");}*/
+
+
+@layer components {
+
+    .public-sans {
+        font-family: "Public Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-style: normal;
+    }
+}
