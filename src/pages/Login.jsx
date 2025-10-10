@@ -182,7 +182,7 @@ const Login = () => {
                     </div>
                 </form>
                 <div className='h-[150px] w-full flex flex-col gap-2 justify-center items-center text-neutral-600'>
-                    <p className='text-[0.9em]'>Don't have an account ? <Link to={'/rejister'} className='text-indigo-600'>Signup now</Link></p>
+                    <p className='text-[0.9em]'>Don't have an account ? <Link to={'/register'} className='text-indigo-600'>Signup now</Link></p>
                     <p className='text-[0.9em]'>© {new Date().getFullYear()} Snap Talk. Crafted with <span className='text-red-600 text-[1.5em]'>&hearts;</span> by Hassan Ali</p>
                 </div>
             </div>
