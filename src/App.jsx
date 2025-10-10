@@ -5,7 +5,7 @@ import { Route, Routes } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from './firebase/firebaseConfig';
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { setUser, clearUser } from './redux/Auth/authSlice';
+import { setUser, clearUser } from './redux/auth/authSlice';
 import Login from './pages/Login';
 import Rejister from './pages/Rejister';
 import Dashboard from './pages/Dashboard';
