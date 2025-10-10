@@ -1,9 +1,12 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router'
-import Loader from '../components/miniComponents/Loader'
+import Loader from '../components/miniComponents/MiniLoader'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../firebase/firebaseConfig'
+import MiniLoader from '../components/miniComponents/MiniLoader'
 
 
 
@@ -12,9 +15,8 @@ const Login = () => {
     let [isShowPass, setIsShowPass] = useState(false);
 
     const formSchema = yup.object({
-        email: yup.string().required("Email is required").email(),
-        username: yup.string().required().min(3, "Enter minimum 3 lettters"),
-        password: yup.string().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "Must have a capital and a number.")
+        email: yup.string().required("email is required").email().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must be a valid email"),
+        password: yup.string().required("password is required").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "use capital, small letters, number & min 8 chars")
     })
 
     const {
@@ -26,10 +28,11 @@ const Login = () => {
         resolver: yupResolver(formSchema)
     });
 
-    const onSubmit = (data) => {
-        console.log(data)
-        console.log("Hello")
+    const onSubmit = async(data) => {
+        const response = await signInWithEmailAndPassword(auth,data.email,data.password)
+        console.log(response)
     }
+
 
     const passVisiblity = (e) => {
         e.preventDefault();
@@ -39,10 +42,11 @@ const Login = () => {
 
 
 
+
     return (
-        <div className='h-full w-full flex justify-center items-center bg-violet-50 '>
-            <div className='flex flex-col gap-1  w-full  max-w-[430px] py-[15px]'>
-                <div className=''>
+        <div className='h-full w-full flex justify-center lg:items-center bg-violet-50 '>
+            <div className='flex flex-col gap-1 w-full  max-w-[430px] py-[15px]'>
+                <div className='h-auto w-full'>
                     <div className='h-[70px] w-full relative'>
                         <div className='h-full w-full flex justify-center items-center  absolute right-5'>
                             <img
@@ -56,7 +60,7 @@ const Login = () => {
                         <p className='text-[0.9em] text-neutral-600'>Sign in to continue to Snap Talk.</p>
                     </div>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className='h-[320px] w-full bg-white rounded-[5px] p-[25px] box-border'>
+                <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-[5px] p-[25px] box-border'>
                     <div className='flex flex-col gap-3'>
                         <div className='text-zinc-600 flex flex-col gap-2'>
                             <label htmlFor="" className='text-[0.9em] font-semibold'>Email</label>
@@ -123,7 +127,7 @@ const Login = () => {
                                     {...register("password")}
                                 />
                                 {isShowPass ?
-                                    <button onClick={passVisiblity} className='absolute right-3 top-3 cursor-pointer'>
+                                    <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
                                         <svg
                                             className="w-5 h-5 text-gray-400"
                                             aria-hidden="true"
@@ -145,7 +149,7 @@ const Login = () => {
 
                                     </button>
                                     :
-                                    <button onClick={passVisiblity} className='absolute right-3 top-2 cursor-pointer'>
+                                    <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
                                         <svg
                                             className="w-5 h-5 text-gray-400 "
                                             aria-hidden="true"
@@ -174,7 +178,7 @@ const Login = () => {
                         <div>
 
                         </div>
-                        <input type='submit' className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer' value={true ? 'Sign in' : <Loader />} />
+                        <button type='submit' className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer'>{!isSubmitting ? "Sign in" : <MiniLoader />}</button>
                     </div>
                 </form>
                 <div className='h-[150px] w-full flex flex-col gap-2 justify-center items-center text-neutral-600'>

@@ -3,27 +3,37 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from 'yup'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/firebaseConfig';
 
 
 const Rejister = () => {
     let [isShowPass, setIsShowPass] = useState(false);
 
     const formSchema = yup.object({
-        email: yup.string().required("Email is required").email(),
-        username: yup.string().required().min(3, "Enter minimum 3 lettters"),
-        password: yup.string().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "Must have a capital and a number.")
+        email: yup.string().required().email().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must have valid email"),
+        username: yup.string().required().min(3, "username must have minimum 3 lettters"),
+        password: yup.string().required().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "use capital, small letters, number & min 8 chars")
     })
 
     const {
         register,
         handleSubmit,
         watch,
-        formState: { errors, isSubmitting, submitCount },
+        formState: { errors, },
     } = useForm({
         resolver: yupResolver(formSchema)
     });
 
-    const onSubmit = (data) => console.log(data)
+    const onSubmit = async (data) => {
+        try {
+            const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            console.log(res)
+        } catch (error) {
+            console.error(error.message)
+            console.error(error.code)
+        }
+    }
 
     const passVisiblity = (e) => {
         e.preventDefault();
@@ -33,14 +43,14 @@ const Rejister = () => {
     console.log(errors.email?.message)
 
     return (
-        <div className='h-full w-full flex justify-center items-center bg-violet-50 '>
-            <div className='flex flex-col gap-3 h-[665px] w-full  max-w-[430px] '>
-                <div className=''>
+        <div className='h-full w-full flex justify-center lg:items-center bg-violet-50 '>
+            <div className='flex flex-col gap-1 w-full h-auto  max-w-[430px] py-[15px]'>
+                <div >
                     <div className='h-[70px] w-full relative'>
                         <div className='h-full w-full flex justify-center items-center  absolute right-5'>
                             <img
                                 className='h-[90%]'
-                                src="/logo.png" alt="" />
+                                src="/logo.png" alt="logo" />
                             <h1 className='h-[65%] text-[1.6em] public-sans font-semibold '>Snap Talk</h1>
                         </div>
                     </div>
@@ -143,7 +153,7 @@ const Rejister = () => {
                                     {...register("password")}
                                 />
                                 {isShowPass ?
-                                    <button onClick={passVisiblity} className='absolute right-3 top-3 cursor-pointer'>
+                                    <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
                                         <svg
                                             className="w-5 h-5 text-gray-400"
                                             aria-hidden="true"
@@ -165,7 +175,7 @@ const Rejister = () => {
 
                                     </button>
                                     :
-                                    <button onClick={passVisiblity} className='absolute right-3 top-2  cursor-pointer'>
+                                    <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
                                         <svg
                                             className="w-5 h-5 text-gray-400 "
                                             aria-hidden="true"
@@ -194,7 +204,7 @@ const Rejister = () => {
                         <div>
 
                         </div>
-                        <input type='submit' className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer' value={true ? 'Rejister' : <Loader />} />
+                        <input type='submit' className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer' value={true ? 'Rejister' : <MiniLoader />} />
                     </div>
                 </form>
                 <div className='h-[150px] w-full flex flex-col gap-2 justify-center items-center text-neutral-600'>
