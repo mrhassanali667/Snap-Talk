@@ -55,7 +55,7 @@ const Rejister = () => {
                         </div>
                     </div>
                     <div className='h-[80px] w-full flex flex-col justify-center items-center'>
-                        <h2 className='text-[1.4em] text-zinc-700 font-semibold '>Rejister</h2>
+                        <h2 className='text-[1.4em] text-zinc-700 font-semibold '>Register</h2>
                         <p className='text-[0.9em] text-neutral-600'>Get your Snap Talk account now.</p>
                     </div>
                 </div>
