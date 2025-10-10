@@ -78,7 +78,7 @@ function App() {
         <div className='h-screen w-screen overflow-y-scroll public-sans'>
           <Routes>
             <Route path='/' element={<Login />} />
-            <Route path='/rejister' element={<Rejister />} />
+            <Route path='/register' element={<Rejister />} />
             <Route path='/*' element={<Login />} />
           </Routes>
         </div>
