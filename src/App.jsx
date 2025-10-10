@@ -33,7 +33,6 @@ function App() {
             metadata: {
               createdAt: user?.metadata.createdAt,
               lastLoginAt: user?.metadata.lastLoginAt,
-              lastLoginAt: user?.metadata.lastLoginAt,
             }
           }))
         } else {
