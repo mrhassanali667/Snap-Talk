@@ -204,7 +204,7 @@ const Rejister = () => {
                         <div>
 
                         </div>
-                        <input type='submit' className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer' value={true ? 'Rejister' : <MiniLoader />} />
+                        <input type='submit' className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer' value={true ? 'Register' : <MiniLoader />} />
                     </div>
                 </form>
                 <div className='h-[150px] w-full flex flex-col gap-2 justify-center items-center text-neutral-600'>
