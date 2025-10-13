@@ -13,6 +13,8 @@ import MiniLoader from '../components/miniComponents/MiniLoader'
 const Login = () => {
 
     let [isShowPass, setIsShowPass] = useState(false);
+    let [isSubmiting, setIsSubmiting] = useState(false)
+
 
     const formSchema = yup.object({
         email: yup.string().required("email is required").email().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must be a valid email"),
@@ -23,14 +25,23 @@ const Login = () => {
         register,
         handleSubmit,
         watch,
-        formState: { errors, isSubmitting },
+        formState: { errors,isSubmitSuccessful },
     } = useForm({
         resolver: yupResolver(formSchema)
     });
 
-    const onSubmit = async(data) => {
-        const response = await signInWithEmailAndPassword(auth,data.email,data.password)
-        console.log(response)
+    const onSubmit = async (data) => {
+        try {
+            setIsSubmiting(true)
+            const response = await signInWithEmailAndPassword(auth, data.email, data.password)
+            console.log(response)
+            setIsSubmiting(false)
+
+        } catch (error) {
+            console.error(error.code)
+            console.error(error.message)
+            setIsSubmiting(false)
+        }
     }
 
 
@@ -60,7 +71,7 @@ const Login = () => {
                         <p className='text-[0.9em] text-neutral-600'>Sign in to continue to Snap Talk.</p>
                     </div>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-[5px] p-[25px] box-border'>
+                <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-[5px] p-[25px] box-border '>
                     <div className='flex flex-col gap-3'>
                         <div className='text-zinc-600 flex flex-col gap-2'>
                             <label htmlFor="" className='text-[0.9em] font-semibold'>Email</label>
@@ -178,7 +189,7 @@ const Login = () => {
                         <div>
 
                         </div>
-                        <button type='submit' className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer'>{!isSubmitting ? "Sign in" : <MiniLoader />}</button>
+                        <button type='submit' disabled={isSubmitSuccessful} className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer'>{!isSubmiting ? "Sign in" : <MiniLoader />}</button>
                     </div>
                 </form>
                 <div className='h-[150px] w-full flex flex-col gap-2 justify-center items-center text-neutral-600'>
