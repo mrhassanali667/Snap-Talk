@@ -9,6 +9,7 @@ import { setUser, clearUser } from './redux/auth/authSlice';
 import Login from './pages/Login';
 import Rejister from './pages/Rejister';
 import Dashboard from './pages/Dashboard';
+import CreateProfile from './pages/CreateProfile';
 
 
 
@@ -80,6 +81,7 @@ function App() {
             <Route path='/' element={<Login />} />
             <Route path='/register' element={<Rejister />} />
             <Route path='/*' element={<Login />} />
+            <Route path='/createprofile' element={<CreateProfile/>} />
           </Routes>
         </div>
 

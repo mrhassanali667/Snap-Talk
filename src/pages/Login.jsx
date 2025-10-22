@@ -71,7 +71,7 @@ const Login = () => {
                         <p className='text-[0.9em] text-neutral-600'>Sign in to continue to Snap Talk.</p>
                     </div>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-[5px] p-[25px] box-border '>
+                <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-[5px] p-[25px] box-border `'>
                     <div className='flex flex-col gap-3'>
                         <div className='text-zinc-600 flex flex-col gap-2'>
                             <label htmlFor="" className='text-[0.9em] font-semibold'>Email</label>
