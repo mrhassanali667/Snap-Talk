@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link } from 'react-router'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from 'yup'
 import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
@@ -8,9 +8,8 @@ import { auth, db } from '../firebase/firebaseConfig';
 import { addDoc, collection } from 'firebase/firestore';
 import { useMutationState } from '@tanstack/react-query'
 import { useMutation } from '@tanstack/react-query'
-import MiniLoader from '../components/miniComponents/MiniLoader';
+import MiniLoader from '../components/common/MiniLoader';
 import { useDispatch, useSelector } from 'react-redux';
-import { setIsRegistered } from '../redux/auth/authSlice';
 
 
 
@@ -18,14 +17,13 @@ import { setIsRegistered } from '../redux/auth/authSlice';
 const Rejister = () => {
 
     const dispatch = useDispatch()
-    let isRegistered = useSelector((state) => state.auth.isRegistered);
     let [isShowPass, setIsShowPass] = useState(false);
     let [isSubmiting, setIsSubmiting] = useState(false);
 
 
     const formSchema = yup.object({
         email: yup.string().required().email().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must have valid email"),
-        username: yup.string().required().min(3, "username must have minimum 3 lettters"),
+        username: yup.string().required().min(3, "username must have minimum 3 lettters").max(12, "include maximum 12 lettters"),
         password: yup.string().required().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "use capital, small letters, number & min 8 chars")
     })
 
@@ -44,11 +42,14 @@ const Rejister = () => {
         },
     })
 
+    // debug: mutation data
+    // console.log(mutation.data)
 
-    const onSubmit = async ({ email, password }) => {
+    const onSubmit = async (data) => {
         try {
             setIsSubmiting(true)
-            const res = await createUserWithEmailAndPassword(auth, email, password);
+            const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            // after creating auth user, save profile data to firestore
             await mutation.mutateAsync({
                 uid: res.user.uid,
                 email: data.email,
@@ -59,7 +60,6 @@ const Rejister = () => {
         } catch (error) {
             console.error(error.message)
             console.error(error.code)
-            setIsSubmiting(false)
         }
     }
 
@@ -74,7 +74,7 @@ const Rejister = () => {
     return (
         <div className='h-full w-full flex justify-center lg:items-center bg-violet-50 '>
 
-            <div className='flex flex-col gap-1 w-full h-auto  max-w-[430px] p-[10px]'>
+            <div className='flex flex-col gap-1 w-full h-auto  max-w-[430px] py-[15px]'>
                 <div >
                     <div className='h-[70px] w-full relative'>
                         <div className='h-full w-full flex justify-center items-center  absolute right-5'>
@@ -85,8 +85,8 @@ const Rejister = () => {
                         </div>
                     </div>
                     <div className='h-[80px] w-full flex flex-col justify-center items-center'>
-                        <h2 className='text-[1.4em] text-zinc-700 font-semibold '>Register</h2>
-                        <p className='text-[0.9em] text-neutral-600'>Get your Snap Talk account now.</p>
+                        <h2 className='text-[1.4em] text-zinc-700 font-semibold '>{!isRegistered ? "Register" : "Create Your Profile"}</h2>
+                        <p className='text-[0.9em] text-neutral-600'>{!isRegistered ? "Get your Snap Talk account now." : "Sign in to continue to Snap Talk"}</p>
                     </div>
                 </div>
 
@@ -238,8 +238,9 @@ const Rejister = () => {
                         <button disabled={isSubmitSuccessful} className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer'>{!isSubmiting ? 'Register' : <MiniLoader />}</button>
                     </div>
                 </form>
+
                 <div className='h-[150px] w-full flex flex-col gap-2 justify-center items-center text-neutral-600'>
-                    {!isRegistered && <p className='text-[0.9em]'>Don't have an account ? <Link to={'/login'} className='text-indigo-600'>Signin</Link></p>}
+                    <p className='text-[0.9em]'>Don't have an account ? <Link to={'/login'} className='text-indigo-600'>Signin</Link></p>
                     <p className='text-[0.9em]'>© {new Date().getFullYear()} Snap Talk. Crafted with  <span className='text-red-600 text-[1.5em]'>&hearts;</span> by Hassan Ali</p>
                 </div>
             </div>

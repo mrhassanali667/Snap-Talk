@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Rejister from './pages/Rejister';
 import Dashboard from './pages/Dashboard';
 import CreateProfile from './pages/CreateProfile';
+import NotFound from './pages/NotFound';
 
 
 
@@ -68,22 +69,30 @@ function App() {
 
   return (
     <>
-      {user ?
+      {user && false ?
         <div className='h-screen w-screen overflow-auto public-sans'>
           <Routes>
             <Route path='/' element={<Dashboard />} />
-            <Route path='*' element={<Dashboard />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </div>
         :
-        <div className='h-screen w-screen overflow-y-scroll public-sans'>
-          <Routes>
-            <Route path='/' element={<Login />} />
-            <Route path='/register' element={<Rejister />} />
-            <Route path='/*' element={<Login />} />
-            <Route path='/createprofile' element={<CreateProfile/>} />
-          </Routes>
-        </div>
+        user ?
+          <div className='h-screen w-screen overflow-auto public-sans'>
+            <Routes>
+              <Route path='/createprofile' element={<CreateProfile />} />
+              <Route path='*' element={<CreateProfile />} />
+            </Routes>
+          </div>
+          :
+          <div className='h-screen w-screen overflow-y-scroll public-sans'>
+            <Routes>
+              <Route path='/' element={<Login />} />
+              <Route path='/register' element={<Rejister />} />
+              <Route path='/*' element={<Login />} />
+              <Route path='/createprofile' element={<CreateProfile />} />
+            </Routes>
+          </div>
 
       }
     </>

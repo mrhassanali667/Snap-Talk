@@ -1,12 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { Link } from 'react-router'
-import Loader from '../components/miniComponents/MiniLoader'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase/firebaseConfig'
-import MiniLoader from '../components/miniComponents/MiniLoader'
+import MiniLoader from '../components/common/MiniLoader'
 
 
 
@@ -25,15 +24,15 @@ const Login = () => {
         register,
         handleSubmit,
         watch,
-        formState: { errors,isSubmitSuccessful },
+        formState: { errors, isSubmitSuccessful },
     } = useForm({
         resolver: yupResolver(formSchema)
     });
 
-    const onSubmit = async (data) => {
+    const onSubmit = async ({ email, password }) => {
         try {
             setIsSubmiting(true)
-            const response = await signInWithEmailAndPassword(auth, data.email, data.password)
+            const response = await signInWithEmailAndPassword(auth, email, password)
             console.log(response)
             setIsSubmiting(false)
 

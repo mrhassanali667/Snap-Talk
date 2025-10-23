@@ -1,25 +1,69 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import MiniLoader from '../components/miniComponents/MiniLoader';
+import MiniLoader from '../components/common/MiniLoader';
+import ImageBox from '../components/common/ImageBox';
+import { useDispatch, useSelector } from 'react-redux';
+import { showImage } from '../redux/imageBox/imageBoxSlice';
 
-const ProfileDetailForm = () => {
-
+const CreateProfile = () => {
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const dispatch = useDispatch();
+    const isShowImage = useSelector(state => state.image.isShowImage);
 
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors, isSubmitSuccessful },
-    } = useForm();
+        reset
+    } = useForm({
+        defaultValues: {
+            displayName: '',
+            about: '',
+            image: null
+        }
+    });
 
-    const onSubmit = (data) => {
-        const img = URL.createObjectURL((data.image[0]))
-        console.log(data)
+    const validateImageFile = (file) => {
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        const maxSize = 5 * 1024 * 1024; // 5MB
+
+        if (!validTypes.includes(file.type)) {
+            return "Please upload a valid image file (JPEG, PNG, or GIF)";
+        }
+        if (file.size > maxSize) {
+            return "Image size should be less than 5MB";
+        }
+        return true;
+    };
+
+    const onSubmit = async (data) => {
+        try {
+            setIsSubmitting(true);
+            if (data.image?.[0]) {
+                const validationResult = validateImageFile(data.image[0]);
+                if (validationResult !== true) {
+                    throw new Error(validationResult);
+                }
+            }
+            
+            // TODO: Implement your profile creation logic here
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
+            
+            reset();
+            // TODO: Show success message and redirect
+        } catch (error) {
+            console.error('Profile creation failed:', error);
+            // TODO: Show error message
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     return (
         <>
-            <div className='h-full w-full flex justify-center  bg-violet-50'>
+
+            <div className='w-full flex justify-center lg:items-center  bg-violet-50'>
                 <div className='w-full max-w-[440px] flex gap-1 p-[10px] flex-col justify-center items-center'>
                     <div >
                         <div className='h-[70px] w-full relative'>
@@ -57,7 +101,8 @@ const ProfileDetailForm = () => {
                                         </svg>
                                         :
                                         <img
-                                            className='h-full w-full'
+                                            onClick={() => {dispatch(showImage())}}
+                                            className='h-full w-full cursor-pointer'
                                             src={URL.createObjectURL(watch("image")[0])} alt='profile-image' />
                                     }
 
@@ -66,8 +111,25 @@ const ProfileDetailForm = () => {
                                     <span className=' text-zinc-700 font-bold'>Profile Photo</span>
                                     <div className='text-gray-500'>
                                         <label className='cursor-pointer' htmlFor="file-input">Upload Photo</label>
-                                        <input type="file" id='file-input' hidden {...register("image", { required: "Profile photo is required" })} />
-                                        <span className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.image?.message}</span>
+                                        <input 
+                                        type="file" 
+                                        id='file-input' 
+                                        hidden 
+                                        accept="image/jpeg,image/png,image/gif"
+                                        {...register("image", { 
+                                            required: "Profile photo is required",
+                                            validate: {
+                                                fileType: (value) => {
+                                                    if (value?.[0]) {
+                                                        return validateImageFile(value[0]) === true || validateImageFile(value[0]);
+                                                    }
+                                                    return true;
+                                                }
+                                            }
+                                        })} 
+                                        aria-describedby="file-input-error"
+                                    />
+                                        <span id="file-input-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.image?.message}</span>
                                     </div>
                                 </div>
                             </div>
@@ -105,26 +167,46 @@ const ProfileDetailForm = () => {
 
                             </div>
                             <div className='text-zinc-600 flex flex-col gap-2 w-full'>
-                                <label htmlFor="" className='text-[0.9em] font-semibold'>Aboute You</label>
-                                <div className='h-[40px] flex  border-gray-300 border-[1px] rounded-[5px]'>
-
-                                    <input
-                                        className={`h-full w-[90%] outline-0 px-[10px] placeholder:text-zinc-500 ${errors.aboute?.message !== undefined && "border-red-500 border-[1px]"}`}
-                                        type="text"
+                                <label htmlFor="about" className='text-[0.9em] font-semibold'>About You</label>
+                                <div className='min-h-[40px] flex border-gray-300 border-[1px] rounded-[5px] transition-colors focus-within:border-indigo-500'>
+                                    <textarea
+                                        id="about"
+                                        className={`w-full min-h-[80px] outline-none px-[10px] py-2 placeholder:text-zinc-500 resize-y ${errors.about?.message ? "border-red-500" : ""}`}
                                         placeholder='Tell us a bit about yourself...'
-                                        {...register("aboute", { maxLength: { value: 200, message: "Maximum 200 characters" } })}
+                                        {...register("about", { 
+                                            maxLength: { 
+                                                value: 200, 
+                                                message: "Maximum 200 characters" 
+                                            }
+                                        })}
+                                        aria-describedby="about-error"
                                     />
                                 </div>
-                                <span className='text-[0.8em] text-red-500 font-normal'>{errors.aboute?.message}</span>
+                                <div className="flex justify-between">
+                                    <span id="about-error" role="alert" className='text-[0.8em] text-red-500 font-normal'>{errors.about?.message}</span>
+                                    <span className="text-[0.8em] text-gray-500">{(watch("about")?.length || 0)}/200</span>
+                                </div>
                             </div>
-                            <button type='submit' disabled={isSubmitSuccessful} className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer mt-5'>{!false ? "Save Profile" : <MiniLoader />}</button>
+                            <button 
+                                type='submit' 
+                                disabled={isSubmitting} 
+                                className={`h-[40px] flex justify-center items-center ${isSubmitting ? 'bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-700'} text-white font-semibold rounded-[5px] transition-colors mt-2 ${isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                                aria-busy={isSubmitting}
+                            >
+                                {isSubmitting ? <MiniLoader /> : "Save Profile"}
+                            </button>
                         </div>
                     </form>
-
+                    <div className='h-[80px] w-full flex flex-col gap-2 justify-center items-center text-neutral-600'>
+                        <p className='text-[0.9em]'>Want to leave <button className='text-indigo-600'>Logout</button></p>
+                        <p className='text-[0.9em]'>© {new Date().getFullYear()} Snap Talk. Crafted with  <span className='text-red-600 text-[1.5em]'>&hearts;</span> by Hassan Ali</p>
+                    </div>
                 </div>
+                {isShowImage && <ImageBox image={(watch("image")?.length > 0) && URL.createObjectURL(watch("image")[0])} />}
             </div>
+
         </>
     )
 }
 
-export default ProfileDetailForm
+export default CreateProfile
