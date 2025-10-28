@@ -1,29 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from 'yup'
 import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase/firebaseConfig';
-import { addDoc, collection } from 'firebase/firestore';
-import { useMutationState } from '@tanstack/react-query'
+import { addDoc, collection, getDocs, namedQuery, query, where } from 'firebase/firestore';
+import { useMutationState, useQuery } from '@tanstack/react-query'
 import { useMutation } from '@tanstack/react-query'
 import MiniLoader from '../components/common/MiniLoader';
 import { useDispatch, useSelector } from 'react-redux';
+import { useDebounce } from "use-debounce";
 
 
 
 
-const Rejister = () => {
 
-    const dispatch = useDispatch()
-    let [isShowPass, setIsShowPass] = useState(false);
-    let [isSubmiting, setIsSubmiting] = useState(false);
+const Register = () => {
+    const dispatch = useDispatch();
+    const [isShowPass, setIsShowPass] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
 
 
     const formSchema = yup.object({
-        email: yup.string().required().email().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must have valid email"),
-        username: yup.string().required().min(3, "username must have minimum 3 lettters").max(12, "include maximum 12 lettters"),
+        email: yup.string().required().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must be a valid email address"),
+        username: yup.string().required().min(3, "username must have minimum 3 lettters"),
         password: yup.string().required().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "use capital, small letters, number & min 8 chars")
     })
 
@@ -42,34 +45,64 @@ const Rejister = () => {
         },
     })
 
-    // debug: mutation data
-    // console.log(mutation.data)
-
     const onSubmit = async (data) => {
         try {
-            setIsSubmiting(true)
+            setErrorMessage("");
+            setIsSubmitting(true);
             const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
-            // after creating auth user, save profile data to firestore
             await mutation.mutateAsync({
                 uid: res.user.uid,
                 email: data.email,
                 username: data.username,
-                createdAt: new Date().toISOString(),
-            })
-            dispatch(setIsRegistered(true))
+                createdAt: new Date().getTime()
+            });
+
         } catch (error) {
-            console.error(error.message)
-            console.error(error.code)
+            let message = "Registration failed. Please try again.";
+            if (error.code === "auth/email-already-in-use") {
+                message = "This email is already registered. Please use a different email or sign in.";
+            }
+            setErrorMessage(message);
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
-    console.log(isSubmitSuccessful)
+    // const q = query(collection(db, "users"), where("username", "==", username));
+    // const querySnapshot = await getDocs(q);
+
+    // let UsernameSearch = (username) => {
+    //     const [debounced, setDebounced] = useState(username);
+
+    //     useEffect(() => {
+    //         const handler = setTimeout(() => setDebounced(username), 1500);
+    //         return () => clearTimeout(handler);
+    //     }, [username]);
+    //     console.log(username)
+
+    //     return useQuery({
+    //         queryKey: ["username", debounced],
+    //         queryFn: async () => {
+    //             if (!debounced) return null;
+    //             const q = query(collection(db, "users"), where("username", "==", debounced));
+    //             const snap = await getDocs(q);
+    //             return !!snap;
+    //         },
+    //         enabled: !!debounced,
+    //     });
+    // }
+
+    // const { data, isLoading } = UsernameSearch(watch('username'));
+
+    // console.log(data)
+
+
     const passVisiblity = (e) => {
         e.preventDefault();
         setIsShowPass(!isShowPass)
 
     }
-    console.log(errors.email?.message)
+
 
     return (
         <div className='h-full w-full flex justify-center lg:items-center bg-violet-50 '>
@@ -85,17 +118,22 @@ const Rejister = () => {
                         </div>
                     </div>
                     <div className='h-[80px] w-full flex flex-col justify-center items-center'>
-                        <h2 className='text-[1.4em] text-zinc-700 font-semibold '>{!isRegistered ? "Register" : "Create Your Profile"}</h2>
-                        <p className='text-[0.9em] text-neutral-600'>{!isRegistered ? "Get your Snap Talk account now." : "Sign in to continue to Snap Talk"}</p>
+                        <h2 className='text-[1.4em] text-zinc-700 font-semibold '>Register</h2>
+                        <p className='text-[0.9em] text-neutral-600'> Get your Snap Talk account now.</p>
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-[5px] p-[25px] box-border'>
-                    <div className='flex flex-col gap-3'>
+                {errorMessage && (
+                    <div className="mb-4 p-3 rounded bg-red-50 border border-red-200 text-red-600 text-sm text-center">
+                        {errorMessage}
+                    </div>
+                )}
+                <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-lg shadow-sm p-6 box-border'>
+                    <div className='flex flex-col gap-4'>
                         <div className='text-zinc-600 flex flex-col gap-2'>
-                            <label htmlFor="" className='text-[0.9em] font-semibold'>Email</label>
-                            <div className='h-[40px] flex  border-gray-300 border-[1px] rounded-[5px]'>
-                                <span className='h-[40px] w-[40px] flex justify-center items-center bg-gray-100'>
+                            <label htmlFor="email" className='text-[0.9em] font-semibold'>Email</label>
+                            <div className={`h-[40px] flex border-[1.5px] rounded-md  border-gray-300`}>
+                                <span className='h-full w-[38px] flex justify-center items-center bg-gray-50'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
                                         aria-hidden="true"
@@ -115,19 +153,23 @@ const Rejister = () => {
 
                                 </span>
                                 <input
-                                    className={`h-full w-[90%] outline-0 px-[10px] placeholder:text-zinc-500 ${errors.email?.message !== undefined && "border-red-500 border-[1px]"} `}
+                                    id="email"
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px] transition-colors duration-200 placeholder:text-zinc-400 bg-transparent ${errors.email ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
                                     type="email"
                                     placeholder='Enter your email'
-                                    {...register("email", { required: "Email is required" })}
+                                    {...register("email")}
+                                    aria-describedby="email-error"
                                 />
 
                             </div>
-                            <span className='text-[0.8em] text-red-500 font-normal'>{errors.email?.message}</span>
+                            {errors.email?.message && (
+                                <span id="email-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.email.message}</span>
+                            )}
                         </div>
                         <div className='text-zinc-600 flex flex-col gap-2'>
-                            <label htmlFor="" className='text-[0.9em] font-semibold'>Username</label>
-                            <div className='h-[40px] flex  border-gray-300 border-[1px] rounded-[5px]'>
-                                <span className='h-[40px] w-[40px] flex justify-center items-center bg-gray-100'>
+                            <label htmlFor="username" className='text-[0.9em] font-semibold'>Username</label>
+                            <div className={`h-[40px] flex border-[1.5px] rounded-md border-gray-300`}>
+                                <span className='h-full w-[40px] flex justify-center items-center bg-gray-100'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
                                         aria-hidden="true"
@@ -146,17 +188,22 @@ const Rejister = () => {
 
                                 </span>
                                 <input
-                                    className={`h-full w-[90%] outline-0 px-[10px] placeholder:text-zinc-500 ${errors.username?.message !== undefined && "border-red-500 border-[1px]"}`} type="text"
+                                    id="username"
+                                    className={`h - full w-[90%] outline-none px-3 border-[1px] border-gray-300 placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.username ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    type="text"
                                     placeholder='Enter your username'
-                                    {...register("username", { required: "Username is required" })}
+                                    {...register("username")}
+                                    aria-describedby="username-error"
                                 />
                             </div>
-                            <span className='text-[0.8em] text-red-500 font-normal'>{errors.username?.message}</span>
+                            {errors.username?.message && (
+                                <span id="username-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.username.message}</span>
+                            )}
                         </div>
                         <div className='text-zinc-600 flex flex-col gap-2'>
-                            <label htmlFor="" className='text-[0.9em] font-semibold'>Password</label>
-                            <div className='h-[40px] flex border-gray-300 border-[1px] rounded-[5px] relative'>
-                                <span className='h-[40px] w-[40px] flex justify-center items-center bg-gray-100'>
+                            <label htmlFor="password" className='text-[0.9em] font-semibold'>Password</label>
+                            <div className={`h-[40px] flex border-[1px] border-gray-300 rounded-md  relative`}>
+                                <span className='h-full w-[40px] flex justify-center items-center bg-gray-100'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
                                         aria-hidden="true"
@@ -178,10 +225,12 @@ const Rejister = () => {
 
                                 </span>
                                 <input
-                                    className={`h-full w-[90%] outline-0 px-[10px] placeholder:text-zinc-500 ${errors.password?.message !== undefined && "border-red-500 border-[1px]"}`}
+                                    id="password"
+                                    className={`h-full w-[90%] outline-none border-[1px] px-3 placeholder:text-zinc-400 bg-transparent  border-gray-300  transition-colors duration-200 ${errors.username ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
                                     type={isShowPass ? "text" : "password"}
                                     placeholder='Enter your password'
-                                    {...register("password", { required: "Password is required" })}
+                                    {...register("password")}
+                                    aria-describedby="password-error"
                                 />
                                 {isShowPass ?
                                     <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
@@ -230,12 +279,21 @@ const Rejister = () => {
                                     </button>
                                 }
                             </div>
-                            <span className='text-[0.8em] text-red-500 font-normal'>{errors.password?.message}</span>
-                        </div>
-                        <div>
+                            {errors.password?.message && (
+                                <span id="password-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.password.message}</span>
+                            )}
 
                         </div>
-                        <button disabled={isSubmitSuccessful} className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer'>{!isSubmiting ? 'Register' : <MiniLoader />}</button>
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className={`h-[40px] flex justify-center items-center ${isSubmitting ? 'bg-indigo-500' : 'bg-indigo-600 hover:bg-indigo-700'
+                                } text-white font-semibold rounded-md mt-[10px] transition-colors duration-200 ${isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'
+                                }`}
+                            aria-busy={isSubmitting}
+                        >
+                            {isSubmitting ? <MiniLoader /> : 'Register'}
+                        </button>
                     </div>
                 </form>
 
@@ -249,4 +307,4 @@ const Rejister = () => {
     )
 }
 
-export default Rejister
+export default Register

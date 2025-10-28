@@ -10,9 +10,9 @@ import MiniLoader from '../components/common/MiniLoader'
 
 
 const Login = () => {
-
-    let [isShowPass, setIsShowPass] = useState(false);
-    let [isSubmiting, setIsSubmiting] = useState(false)
+    const [isShowPass, setIsShowPass] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
 
     const formSchema = yup.object({
@@ -31,15 +31,20 @@ const Login = () => {
 
     const onSubmit = async ({ email, password }) => {
         try {
-            setIsSubmiting(true)
-            const response = await signInWithEmailAndPassword(auth, email, password)
-            console.log(response)
-            setIsSubmiting(false)
-
+            setErrorMessage("");
+            setIsSubmitting(true);
+            await signInWithEmailAndPassword(auth, email, password);
+            // Login successful, handle navigation here
         } catch (error) {
-            console.error(error.code)
-            console.error(error.message)
-            setIsSubmiting(false)
+            let message = "Login failed. Please check your credentials.";
+            if (error.code === "auth/user-not-found") {
+                message = "No account found with this email. Please register first.";
+            } else if (error.code === "auth/wrong-password") {
+                message = "Incorrect password. Please try again.";
+            }
+            setErrorMessage(message);
+        } finally {
+            setIsSubmitting(false);
         }
     }
 
@@ -70,12 +75,17 @@ const Login = () => {
                         <p className='text-[0.9em] text-neutral-600'>Sign in to continue to Snap Talk.</p>
                     </div>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-[5px] p-[25px] box-border `'>
-                    <div className='flex flex-col gap-3'>
+                {errorMessage && (
+                    <div className="mb-4 p-3 rounded bg-red-50 border border-red-200 text-red-600 text-sm">
+                        {errorMessage}
+                    </div>
+                )}
+                <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-lg shadow-sm p-6 box-border'>
+                    <div className='flex flex-col gap-4'>
                         <div className='text-zinc-600 flex flex-col gap-2'>
-                            <label htmlFor="" className='text-[0.9em] font-semibold'>Email</label>
-                            <div className='h-[40px] flex  border-gray-300 border-[1px] rounded-[5px]'>
-                                <span className='h-[40px] w-[40px] flex justify-center items-center bg-gray-100'>
+                            <label htmlFor="email" className='text-[0.9em] font-semibold'>Email</label>
+                            <div className={`h-[40px] flex border-[1px] border-gray-300 rounded-md `}>
+                                <span className='h-full w-[40px] flex justify-center items-center bg-gray-100'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
                                         aria-hidden="true"
@@ -96,19 +106,22 @@ const Login = () => {
 
                                 </span>
                                 <input
-                                    className={`h-full w-[90%] outline-0 px-[10px] placeholder:text-zinc-500 ${errors.email?.message !== undefined && "border-red-500 border-[1px]"}`}
+                                    id="email"
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px] placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.email ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
                                     type="email"
                                     placeholder='Enter your email'
                                     {...register("email")}
+                                    aria-describedby="email-error"
                                 />
                             </div>
-                            <span className='text-[0.8em] text-red-500 font-normal'>{errors.email?.message}</span>
-
+                            {errors.email?.message && (
+                                <span id="email-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.email.message}</span>
+                            )}
                         </div>
                         <div className='text-zinc-600 flex flex-col gap-2'>
-                            <label htmlFor="" className='text-[0.9em] font-semibold'>Password</label>
-                            <div className='h-[40px] flex border-gray-300 border-[1px] rounded-[5px] relative'>
-                                <span className='h-[40px] w-[40px] flex justify-center items-center bg-gray-100'>
+                            <label htmlFor="password" className='text-[0.9em] font-semibold'>Password</label>
+                            <div className={`h-[40px] flex border-[1px] border-gray-300 rounded-md `}>
+                                <span className='h-full[40px] w-[40px] flex justify-center items-center bg-gray-100'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
                                         aria-hidden="true"
@@ -130,11 +143,12 @@ const Login = () => {
 
                                 </span>
                                 <input
-
-                                    className={`h-full w-[90%] outline-0 px-[10px] placeholder:text-zinc-500 ${errors.email?.message !== undefined && "border-red-500 border-[1px]"}`}
+                                    id="password"
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px]  placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.email ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
                                     type={isShowPass ? "text" : "password"}
                                     placeholder='Enter your password'
                                     {...register("password")}
+                                    aria-describedby="password-error"
                                 />
                                 {isShowPass ?
                                     <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
@@ -183,12 +197,25 @@ const Login = () => {
                                     </button>
                                 }
                             </div>
-                            <span className='text-[0.8em] text-red-500 font-normal'>{errors.password?.message}</span>
+                            {errors.password?.message && (
+                                <span id="password-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.password.message}</span>
+                            )}
                         </div>
-                        <div>
-
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className={`h-[40px] flex justify-center items-center ${isSubmitting ? 'bg-indigo-500' : 'bg-indigo-600 hover:bg-indigo-700'
+                                } text-white font-semibold rounded-md mt-[10px] transition-colors duration-200 ${isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'
+                                }`}
+                            aria-busy={isSubmitting}
+                        >
+                            {isSubmitting ? <MiniLoader /> : 'Sign in'}
+                        </button>
+                        <div className="flex justify-end">
+                            <button type="button" className="text-sm text-indigo-600 hover:text-indigo-700">
+                                Forgot password?
+                            </button>
                         </div>
-                        <button type='submit' disabled={isSubmitSuccessful} className='h-[40px] flex justify-center items-center bg-indigo-600/70 text-white font-semibold rounded-[5px] cursor-pointer'>{!isSubmiting ? "Sign in" : <MiniLoader />}</button>
                     </div>
                 </form>
                 <div className='h-[150px] w-full flex flex-col gap-2 justify-center items-center text-neutral-600'>
