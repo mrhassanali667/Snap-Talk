@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -34,9 +34,8 @@ const Login = () => {
             setErrorMessage("");
             setIsSubmitting(true);
             await signInWithEmailAndPassword(auth, email, password);
-            // Login successful, handle navigation here
         } catch (error) {
-            let message = "Login failed. Please check your credentials.";
+            let message = "Login failed. Please check your email and password.";
             if (error.code === "auth/user-not-found") {
                 message = "No account found with this email. Please register first.";
             } else if (error.code === "auth/wrong-password") {
@@ -85,7 +84,7 @@ const Login = () => {
                         <div className='text-zinc-600 flex flex-col gap-2'>
                             <label htmlFor="email" className='text-[0.9em] font-semibold'>Email</label>
                             <div className={`h-[40px] flex border-[1px] border-gray-300 rounded-md `}>
-                                <span className='h-full w-[40px] flex justify-center items-center bg-gray-100'>
+                                <span className='h-full w-[40px] rounded-l-md flex justify-center items-center bg-gray-100'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
                                         aria-hidden="true"
@@ -121,7 +120,7 @@ const Login = () => {
                         <div className='text-zinc-600 flex flex-col gap-2'>
                             <label htmlFor="password" className='text-[0.9em] font-semibold'>Password</label>
                             <div className={`h-[40px] flex border-[1px] border-gray-300 rounded-md `}>
-                                <span className='h-full[40px] w-[40px] flex justify-center items-center bg-gray-100'>
+                                <span className='h-full w-[40px] rounded-l-md flex justify-center items-center bg-gray-100'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
                                         aria-hidden="true"

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import imageCompression from "browser-image-compression";
-import { Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from './firebase/firebaseConfig';
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
@@ -18,7 +18,6 @@ function App() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.user)
   let isLoading = useSelector((state) => state.auth.isLoading)
-  console.log(user)
 
   useEffect(() => {
 
@@ -69,7 +68,7 @@ function App() {
 
   return (
     <>
-      {user && false ?
+      {user && true ?
         <div className='h-screen w-screen overflow-auto public-sans'>
           <Routes>
             <Route path='/' element={<Dashboard />} />
@@ -90,7 +89,6 @@ function App() {
               <Route path='/' element={<Login />} />
               <Route path='/register' element={<Rejister />} />
               <Route path='/*' element={<Login />} />
-              <Route path='/createprofile' element={<CreateProfile />} />
             </Routes>
           </div>
 

@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Dashboard = () => {
+
+  let [a, setA] = useState(true)
+  let [w, setW] = useState(screen.width)
+
+  useEffect(() => {
+    if (w < 770) {
+      setA(false)
+    } else {
+      setA(true)
+    }
+  }, [w])
+
   return (
     <div className='h-screen w-screen flex justify-center items-center'>
-      <h1 className='text-[2em] font-semibold text-zinc-700'>Welcome to Dashboard</h1>
+      <h1 className='text-[2em] font-semibold text-zinc-700 text-center'>Welcome to Dashboard</h1>
+      {a &&
+        <div className='h-[60%] w-[60%] bg-violet-500 '>
+          hello world
+        </div>
+      }
     </div>
   )
 }

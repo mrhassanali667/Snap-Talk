@@ -4,13 +4,16 @@ import MiniLoader from '../components/common/MiniLoader';
 import ImageBox from '../components/common/ImageBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { showImage } from '../redux/imageBox/imageBoxSlice';
-import { auth } from '../firebase/firebaseConfig';
+import { auth, db } from '../firebase/firebaseConfig';
 import { signOut } from 'firebase/auth';
+import { updateDoc } from 'firebase/firestore';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 const CreateProfile = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
     const isShowImage = useSelector(state => state.image.isShowImage);
+    let Authuser = useSelector((state) => state.auth.user)
 
     const {
         register,
@@ -95,7 +98,7 @@ const CreateProfile = () => {
                         </div>
                         <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-[5px] p-[25px] box-border'>
                             <div className='flex justify-center items-center h-[100px] w-full relative'>
-                                <div className='h-full flex justify-center absolute top-0 left-16 gap-5'>
+                                <div className='h-full flex justify-center md:absolute top-0 left-16 gap-5'>
                                     <div className='bg-gray-100 h-[80px] w-[80px] rounded-[50%] flex justify-center items-center overflow-hidden ' >
                                         {(!watch("image") || watch("image")?.length < 1) ?
                                             <svg
@@ -123,7 +126,7 @@ const CreateProfile = () => {
                                     </div>
                                     <div className='flex flex-col items-center py-[12px]' >
                                         <span className=' text-zinc-700 font-bold'>Profile Photo</span>
-                                        <div className='text-gray-500'>
+                                        <div className='text-gray-500 flex flex-col items-center'>
                                             <label className='cursor-pointer' htmlFor="file-input">Upload Photo</label>
                                             <input
                                                 type="file"
@@ -143,7 +146,7 @@ const CreateProfile = () => {
                                                 })}
                                                 aria-describedby="file-input-error"
                                             />
-                                            <span id="file-input-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.image?.message}</span>
+                                            <span id="file-input-error" role="alert" className='text-[0.8em] text-center text-red-500 font-normal mt-1'>{errors.image?.message}</span>
                                         </div>
                                     </div>
                                 </div>

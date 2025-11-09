@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from 'yup'
 import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase/firebaseConfig';
-import { addDoc, collection, getDocs, namedQuery, query, where } from 'firebase/firestore';
-import { useMutationState, useQuery } from '@tanstack/react-query'
-import { useMutation } from '@tanstack/react-query'
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { useQuery, useMutation } from '@tanstack/react-query'
 import MiniLoader from '../components/common/MiniLoader';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { useDebounce } from "use-debounce";
 
 
@@ -17,7 +16,6 @@ import { useDebounce } from "use-debounce";
 
 
 const Register = () => {
-    const dispatch = useDispatch();
     const [isShowPass, setIsShowPass] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -26,7 +24,7 @@ const Register = () => {
 
     const formSchema = yup.object({
         email: yup.string().required().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must be a valid email address"),
-        username: yup.string().required().min(3, "username must have minimum 3 lettters"),
+    username: yup.string().required().min(6, "username must have minimum 6 characters"),
         password: yup.string().required().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "use capital, small letters, number & min 8 chars")
     })
 
@@ -34,9 +32,12 @@ const Register = () => {
         register,
         handleSubmit,
         watch,
+        setError,
+        clearErrors,
         formState: { errors, isSubmitSuccessful },
     } = useForm({
-        resolver: yupResolver(formSchema)
+        resolver: yupResolver(formSchema),
+        mode:'onChange'
     });
 
     const mutation = useMutation({
@@ -46,7 +47,20 @@ const Register = () => {
     })
 
     const onSubmit = async (data) => {
+        // Enforce username length at runtime before any API calls
+        if (!data.username || data.username.trim().length < 6) {
+            setError('username', { type: 'manual', message: 'Username must be at least 6 characters' });
+            return;
+        }
+
+        // If the debounced availability check ran and found the username taken, block submit
+        if (usernameTaken) {
+            setError('username', { type: 'manual', message: 'Username is already taken' });
+            return;
+        }
+
         try {
+            clearErrors('username');
             setErrorMessage("");
             setIsSubmitting(true);
             const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
@@ -68,33 +82,31 @@ const Register = () => {
         }
     }
 
-    // const q = query(collection(db, "users"), where("username", "==", username));
-    // const querySnapshot = await getDocs(q);
+    // Debounce username input and query Firestore safely
+    const usernameValue = watch("username") || "";
+    const [debouncedUsername] = useDebounce(usernameValue, 700);
 
-    // let UsernameSearch = (username) => {
-    //     const [debounced, setDebounced] = useState(username);
+    const { data: usernameData, isLoading: usernameLoading } = useQuery({
+        queryKey: ["username", debouncedUsername],
+        queryFn: async () => {
+            if (!debouncedUsername) return null;
+            const q = query(collection(db, "users"), where("username", "==", debouncedUsername));
+            const snap = await getDocs(q);
+            let user = null;
+            snap.forEach((doc) => {
+                user = { ...doc.data(), id: doc.id };
+            });
+            return user;
+        },
+        // only run when username is long enough (>=6)
+        enabled: debouncedUsername.length >= 6,
+        // cache briefly to avoid refetching while user pauses typing
+        staleTime: 60 * 1000,
+    });
 
-    //     useEffect(() => {
-    //         const handler = setTimeout(() => setDebounced(username), 1500);
-    //         return () => clearTimeout(handler);
-    //     }, [username]);
-    //     console.log(username)
+    // helper flags
+    const usernameTaken = !!usernameData;
 
-    //     return useQuery({
-    //         queryKey: ["username", debounced],
-    //         queryFn: async () => {
-    //             if (!debounced) return null;
-    //             const q = query(collection(db, "users"), where("username", "==", debounced));
-    //             const snap = await getDocs(q);
-    //             return !!snap;
-    //         },
-    //         enabled: !!debounced,
-    //     });
-    // }
-
-    // const { data, isLoading } = UsernameSearch(watch('username'));
-
-    // console.log(data)
 
 
     const passVisiblity = (e) => {
@@ -102,6 +114,8 @@ const Register = () => {
         setIsShowPass(!isShowPass)
 
     }
+
+
 
 
     return (
@@ -132,8 +146,8 @@ const Register = () => {
                     <div className='flex flex-col gap-4'>
                         <div className='text-zinc-600 flex flex-col gap-2'>
                             <label htmlFor="email" className='text-[0.9em] font-semibold'>Email</label>
-                            <div className={`h-[40px] flex border-[1.5px] rounded-md  border-gray-300`}>
-                                <span className='h-full w-[38px] flex justify-center items-center bg-gray-50'>
+                            <div className={`h-[40px] flex border-[1px] rounded-md  border-gray-300`}>
+                                <span className='h-[100%] w-[40px] rounded-l-md flex justify-center items-center bg-gray-100'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
                                         aria-hidden="true"
@@ -169,7 +183,7 @@ const Register = () => {
                         <div className='text-zinc-600 flex flex-col gap-2'>
                             <label htmlFor="username" className='text-[0.9em] font-semibold'>Username</label>
                             <div className={`h-[40px] flex border-[1.5px] rounded-md border-gray-300`}>
-                                <span className='h-full w-[40px] flex justify-center items-center bg-gray-100'>
+                                <span className='h-full w-[40px] rounded-l-md flex justify-center items-center bg-gray-100'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
                                         aria-hidden="true"
@@ -189,7 +203,7 @@ const Register = () => {
                                 </span>
                                 <input
                                     id="username"
-                                    className={`h - full w-[90%] outline-none px-3 border-[1px] border-gray-300 placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.username ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px] border-gray-300 placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.username ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
                                     type="text"
                                     placeholder='Enter your username'
                                     {...register("username")}
@@ -199,11 +213,24 @@ const Register = () => {
                             {errors.username?.message && (
                                 <span id="username-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.username.message}</span>
                             )}
+                            {/* Username availability */}
+                            {debouncedUsername.length >= 6 && usernameLoading && (
+                                <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
+                                    <div className="w-4 h-4 border-2 border-gray-300 border-t-indigo-500 rounded-full animate-spin" />
+                                    Checking availability...
+                                </div>
+                            )}
+                            {debouncedUsername.length >= 6 && !usernameLoading && usernameTaken && (
+                                <div className='text-[0.8em] text-red-500 font-normal mt-1'>Username is already taken</div>
+                            )}
+                            {debouncedUsername.length >= 6 && !usernameLoading && !usernameTaken && (
+                                <div className='text-[0.8em] text-green-600 font-normal mt-1'>Username is available</div>
+                            )}
                         </div>
                         <div className='text-zinc-600 flex flex-col gap-2'>
                             <label htmlFor="password" className='text-[0.9em] font-semibold'>Password</label>
                             <div className={`h-[40px] flex border-[1px] border-gray-300 rounded-md  relative`}>
-                                <span className='h-full w-[40px] flex justify-center items-center bg-gray-100'>
+                                <span className='h-full w-[40px] rounded-l-md flex justify-center items-center bg-gray-100'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
                                         aria-hidden="true"
@@ -286,11 +313,12 @@ const Register = () => {
                         </div>
                         <button
                             type="submit"
-                            disabled={isSubmitting}
-                            className={`h-[40px] flex justify-center items-center ${isSubmitting ? 'bg-indigo-500' : 'bg-indigo-600 hover:bg-indigo-700'
-                                } text-white font-semibold rounded-md mt-[10px] transition-colors duration-200 ${isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'
+                            disabled={isSubmitting || usernameTaken}
+                            className={`h-[40px] flex justify-center items-center ${isSubmitting || usernameTaken ? 'bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-700'
+                                } text-white font-semibold rounded-md mt-[10px] transition-colors duration-200 ${isSubmitting || usernameTaken ? 'cursor-not-allowed' : 'cursor-pointer'
                                 }`}
                             aria-busy={isSubmitting}
+                            title={usernameTaken ? 'Please choose a different username' : ''}
                         >
                             {isSubmitting ? <MiniLoader /> : 'Register'}
                         </button>
