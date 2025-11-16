@@ -24,7 +24,7 @@ const Register = () => {
 
     const formSchema = yup.object({
         email: yup.string().required().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must be a valid email address"),
-    username: yup.string().required().min(6, "username must have minimum 6 characters"),
+        username: yup.string().required().min(6, "username must have minimum 6 characters"),
         password: yup.string().required().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "use capital, small letters, number & min 8 chars")
     })
 
@@ -37,7 +37,7 @@ const Register = () => {
         formState: { errors, isSubmitSuccessful },
     } = useForm({
         resolver: yupResolver(formSchema),
-        mode:'onChange'
+        mode: 'onChange'
     });
 
     const mutation = useMutation({
@@ -126,7 +126,7 @@ const Register = () => {
                     <div className='h-[70px] w-full relative'>
                         <div className='h-full w-full flex justify-center items-center  absolute right-5'>
                             <img
-                                className='h-[90%]'
+                                className='h-[70px] w-[70px]'
                                 src="/logo.png" alt="logo" />
                             <h1 className='h-[65%] text-[1.6em] public-sans font-semibold '>Snap Talk</h1>
                         </div>
