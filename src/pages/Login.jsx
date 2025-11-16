@@ -64,7 +64,7 @@ const Login = () => {
                     <div className='h-[70px] w-full relative'>
                         <div className='h-full w-full flex justify-center items-center  absolute right-5'>
                             <img
-                                className='h-[90%]'
+                                className='h-[70px] w-[70px]'
                                 src="/logo.png" alt="" />
                             <h1 className='h-[65%] text-[1.6em] public-sans font-semibold '>Snap Talk</h1>
                         </div>
