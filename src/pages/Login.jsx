@@ -119,7 +119,7 @@ const Login = () => {
                         </div>
                         <div className='text-zinc-600 flex flex-col gap-2'>
                             <label htmlFor="password" className='text-[0.9em] font-semibold'>Password</label>
-                            <div className={`h-[40px] flex border-[1px] border-gray-300 rounded-md `}>
+                            <div className={`h-[40px] flex border-[1px] border-gray-300 rounded-md relative`}>
                                 <span className='h-full w-[40px] rounded-l-md flex justify-center items-center bg-gray-100'>
                                     <svg
                                         className="w-5 h-5 text-gray-400 "
