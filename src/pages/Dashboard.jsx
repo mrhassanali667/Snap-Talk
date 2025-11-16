@@ -3,15 +3,19 @@ import React, { useEffect, useState } from 'react'
 const Dashboard = () => {
 
   let [a, setA] = useState(true)
-  let [w, setW] = useState(screen.width)
 
   useEffect(() => {
-    if (w < 770) {
-      setA(false)
-    } else {
-      setA(true)
-    }
-  }, [w])
+
+    window.addEventListener("resize", (e) => {
+      console.log(e)
+      if (innerWidth < 770) {
+        setA(false)
+      } else {
+        setA(true)
+      }
+    })
+
+  }, [innerWidth])
 
   return (
     <div className='h-screen w-screen flex justify-center items-center'>
