@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from 'yup'
 import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
@@ -19,6 +19,7 @@ const Register = () => {
     const [isShowPass, setIsShowPass] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate()
 
 
 
@@ -47,13 +48,11 @@ const Register = () => {
     })
 
     const onSubmit = async (data) => {
-        // Enforce username length at runtime before any API calls
         if (!data.username || data.username.trim().length < 6) {
             setError('username', { type: 'manual', message: 'Username must be at least 6 characters' });
             return;
         }
 
-        // If the debounced availability check ran and found the username taken, block submit
         if (usernameTaken) {
             setError('username', { type: 'manual', message: 'Username is already taken' });
             return;
@@ -68,8 +67,10 @@ const Register = () => {
                 uid: res.user.uid,
                 email: data.email,
                 username: data.username,
+                isProfileComplete: false,
                 createdAt: new Date().getTime()
             });
+            navigate("/")
 
         } catch (error) {
             let message = "Registration failed. Please try again.";
@@ -82,7 +83,6 @@ const Register = () => {
         }
     }
 
-    // Debounce username input and query Firestore safely
     const usernameValue = watch("username") || "";
     const [debouncedUsername] = useDebounce(usernameValue, 700);
 
@@ -98,9 +98,7 @@ const Register = () => {
             });
             return user;
         },
-        // only run when username is long enough (>=6)
         enabled: debouncedUsername.length >= 6,
-        // cache briefly to avoid refetching while user pauses typing
         staleTime: 60 * 1000,
     });
 
@@ -213,7 +211,6 @@ const Register = () => {
                             {errors.username?.message && (
                                 <span id="username-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.username.message}</span>
                             )}
-                            {/* Username availability */}
                             {debouncedUsername.length >= 6 && usernameLoading && (
                                 <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
                                     <div className="w-4 h-4 border-2 border-gray-300 border-t-indigo-500 rounded-full animate-spin" />

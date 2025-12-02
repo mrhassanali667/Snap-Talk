@@ -1,28 +1,43 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { hideChat, showChat } from '../redux/chatbox/chatBoxSlice.js'
+import Chatbox from '../components/layout/Chatbox.jsx'
+import Navbar from '../components/layout/Navbar.jsx'
+import { Outlet } from 'react-router'
 
 const Dashboard = () => {
 
-  let [a, setA] = useState(true)
+  const dispatch = useDispatch()
+  let isShowChat = useSelector(state => state.chat.isShowChat)
+  console.log(isShowChat)
 
   useEffect(() => {
 
-    window.addEventListener("resize", (e) => {
-      console.log(e)
-      if (innerWidth < 770) {
-        setA(false)
-      } else {
-        setA(true)
-      }
-    })
+    if (innerWidth < 1024) {
+      dispatch(hideChat())
+    } else {
+      dispatch(showChat())
+    }
 
-  }, [innerWidth])
+  }, [])
+
+  window.addEventListener("resize", () => {
+    if (innerWidth < 1024) {
+      dispatch(hideChat())
+    } else {
+      dispatch(showChat())
+    }
+  })
 
   return (
-    <div className='h-screen w-screen flex justify-center items-center'>
-      <h1 className='text-[2em] font-semibold text-zinc-700 text-center'>Welcome to Dashboard</h1>
-      {a &&
-        <div className='h-[60%] w-[60%] bg-violet-500 '>
-          hello world
+    <div className='h-full w-full flex justify-center items-center '>
+      <div className='h-full w-full lg:max-w-[420px] flex max-lg:flex-col-reverse'>
+        <Navbar />
+        <Outlet />
+      </div>
+      {isShowChat &&
+        <div className='h-full w-full bg-neutral-500 '>
+          <Chatbox />
         </div>
       }
     </div>

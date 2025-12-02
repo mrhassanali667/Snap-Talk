@@ -1,16 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
-import imageCompression from "browser-image-compression";
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { auth } from './firebase/firebaseConfig';
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from './firebase/firebaseConfig.js';
+import { onAuthStateChanged } from "firebase/auth";
 import { setUser, clearUser } from './redux/auth/authSlice';
 import Login from './pages/Login';
 import Rejister from './pages/Rejister';
 import Dashboard from './pages/Dashboard';
 import CreateProfile from './pages/CreateProfile';
 import NotFound from './pages/NotFound';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { checkIsProfileComplete, setCurrentUserID, setIsProfileLoading } from './redux/Profile/profileSlice.js';
+import { useQuery } from '@tanstack/react-query';
+import Users from './components/layout/Users.jsx';
+import Contacts from './components/layout/Contacts.jsx';
+import Settings from './components/layout/Settings.jsx';
+import Profile from './components/layout/Profile.jsx';
+import Groups from './components/layout/Groups.jsx';
 
 
 
@@ -18,12 +25,14 @@ function App() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.user)
   let isLoading = useSelector((state) => state.auth.isLoading)
-
+  let isProfileComplete = useSelector((state) => state.profile.isProfileComplete)
+  let isProfileLoading = useSelector((state) => state.profile.isProfileLoading)
   useEffect(() => {
 
     (async () => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
+          console.log(user)
           console.log(user)
           dispatch(setUser({
             uid: user?.uid,
@@ -43,7 +52,10 @@ function App() {
     })()
 
 
+
   }, [])
+
+  console.log(user)
 
 
   if (isLoading) {
@@ -68,31 +80,34 @@ function App() {
 
   return (
     <>
-      {user && true ?
-        <div className='h-screen w-screen overflow-auto public-sans'>
+      <div className='h-screen w-screen overflow-auto public-sans'>
+        {true ?
           <Routes>
-            <Route path='/' element={<Dashboard />} />
-            <Route path='*' element={<NotFound />} />
+            <Route path='/' element={<Dashboard />}>
+              <Route index element={<Users />} />
+              <Route path='/users' element={<Users />} />
+              <Route path='/contacts' element={<Contacts />} />
+              <Route path='/groups' element={<Groups />} />
+              <Route path='/settings' element={<Settings />} />
+              <Route path='/profile' element={<Profile />} />
+            </Route>
+            <Route path='/*' element={<Dashboard />} />
           </Routes>
-        </div>
-        :
-        user ?
-          <div className='h-screen w-screen overflow-auto public-sans'>
+          :
+          user ?
             <Routes>
               <Route path='/createprofile' element={<CreateProfile />} />
-              <Route path='*' element={<CreateProfile />} />
+              <Route path='/*' element={<CreateProfile />} />
             </Routes>
-          </div>
-          :
-          <div className='h-screen w-screen overflow-y-scroll public-sans'>
+            :
             <Routes>
               <Route path='/' element={<Login />} />
               <Route path='/register' element={<Rejister />} />
               <Route path='/*' element={<Login />} />
             </Routes>
-          </div>
 
-      }
+        }
+      </div>
     </>
   )
 }

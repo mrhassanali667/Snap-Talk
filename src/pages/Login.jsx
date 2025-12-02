@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -13,6 +13,7 @@ const Login = () => {
     const [isShowPass, setIsShowPass] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate()
 
 
     const formSchema = yup.object({
@@ -34,6 +35,7 @@ const Login = () => {
             setErrorMessage("");
             setIsSubmitting(true);
             await signInWithEmailAndPassword(auth, email, password);
+            navigate("/")
         } catch (error) {
             let message = "Login failed. Please check your email and password.";
             if (error.code === "auth/user-not-found") {

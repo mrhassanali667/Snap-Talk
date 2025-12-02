@@ -6,14 +6,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showImage } from '../redux/imageBox/imageBoxSlice';
 import { auth, db } from '../firebase/firebaseConfig';
 import { signOut } from 'firebase/auth';
-import { updateDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 const CreateProfile = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const dispatch = useDispatch();
     const isShowImage = useSelector(state => state.image.isShowImage);
-    let Authuser = useSelector((state) => state.auth.user)
+    let Authuser = useSelector(state => state.auth.user)
+    let currentUserID = useSelector(state => state.profile.currentUserId)
 
     const {
         register,
@@ -51,9 +52,11 @@ const CreateProfile = () => {
                     throw new Error(validationResult);
                 }
             }
-
-            // TODO: Implement your profile creation logic here
-            await new Promise(resolve => setTimeout(resolve, 3000)); // Simulated API call
+            if (currentUserID) {
+                await updateDoc(doc(db, "users", currentUserID), {
+                    isProfileComplete: true
+                });
+            }
 
             reset();
         } catch (error) {
@@ -84,7 +87,7 @@ const CreateProfile = () => {
                     <div className='w-full max-w-[440px] flex gap-1 p-[10px] flex-col justify-center items-center'>
                         <div >
                             <div className='h-[70px] w-full relative'>
-                                <div className='h-full w-full flex justify-center items-center  absolute right-5'>
+                                <div className='h-full w-full flex justify-center items-center absolute right-5'>
                                     <img
                                         className='h-[90%]'
                                         src="/logo.png" alt="logo" />

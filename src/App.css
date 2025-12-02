@@ -1,17 +1,6 @@
 @import "tailwindcss";
-
+@custom-variant dark (&:where(.dark, .dark *));
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-
-/* @theme {
-    --public-sans: "Public Sans", sans-serif;
-}
-
-@font-face {
-    font-family: Oswald;
-    font-style: normal;
-    font-weight: 200 700;
-    font-display: swap;
-    src: url("/fonts/Oswald.woff2") format("woff2");}*/
 
 
 @layer components {
@@ -22,4 +11,9 @@
         font-weight: 500;
         font-style: normal;
     }
+
+    .navlink {
+        @apply h-[60px] max-lg:h-[45px] w-[55px] flex justify-center items-center rounded-[10px]
+    }
+
 }
