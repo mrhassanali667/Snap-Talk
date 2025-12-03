@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -13,7 +13,6 @@ const Login = () => {
     const [isShowPass, setIsShowPass] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const navigate = useNavigate()
 
 
     const formSchema = yup.object({
@@ -35,7 +34,6 @@ const Login = () => {
             setErrorMessage("");
             setIsSubmitting(true);
             await signInWithEmailAndPassword(auth, email, password);
-            navigate("/")
         } catch (error) {
             let message = "Login failed. Please check your email and password.";
             if (error.code === "auth/user-not-found") {
@@ -66,7 +64,7 @@ const Login = () => {
                     <div className='h-[70px] w-full relative'>
                         <div className='h-full w-full flex justify-center items-center  absolute right-5'>
                             <img
-                                className='h-[70px] w-[70px]'
+                                className='h-[90%]'
                                 src="/logo.png" alt="" />
                             <h1 className='h-[65%] text-[1.6em] public-sans font-semibold '>Snap Talk</h1>
                         </div>

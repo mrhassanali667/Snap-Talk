@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import MiniLoader from '../components/common/MiniLoader';
-import ImageBox from '../components/common/ImageBox';
+import ImageBox from '../components/specific/ImageBox.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { showImage } from '../redux/imageBox/imageBoxSlice';
-import { auth, db } from '../firebase/firebaseConfig';
+import { auth, db } from '../firebase/firebaseConfig.js';
 import { signOut } from 'firebase/auth';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useMutation, useQuery } from '@tanstack/react-query';

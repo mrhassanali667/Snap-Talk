@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { hideImage } from '../../redux/imageBox/imageBoxSlice'
+import { hideImage } from '../../redux/imageBox/imageBoxSlice.js'
 
 const ImageBox = ({ image }) => {
     const dispatch = useDispatch()

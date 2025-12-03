@@ -31,7 +31,7 @@ const Dashboard = () => {
 
   return (
     <div className='h-full w-full flex justify-center items-center '>
-      <div className='h-full w-full lg:max-w-[420px] flex max-lg:flex-col-reverse'>
+      <div className='h-full w-full lg:max-w-[460px] flex max-lg:flex-col-reverse'>
         <Navbar />
         <Outlet />
       </div>

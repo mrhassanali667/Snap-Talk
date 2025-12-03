@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink } from 'react-router'
+import { getRandomDarkColors } from '../../utils/index.js'
 
 const Navbar = () => {
 
   const user = useSelector((state) => state.auth.user)
   const [isDark, setIsDark] = useState(false)
+  const colors = ["bg-slate-700", "bg-gray-700", "bg-zinc-700", "bg-neutral-700", "bg-stone-700", "bg-red-700", "bg-orange-700", "bg-amber-700", "bg-yellow-700", "bg-lime-700", "bg-green-700", "bg-emerald-700", "bg-teal-700", "bg-cyan-700", "bg-sky-700", "bg-blue-700", "bg-indigo-700", "bg-violet-700", "bg-purple-700", "bg-fuchsia-700", "bg-pink-700", "bg-rose-700"];
+
+
+
 
   const toggleTheme = () => {
     document.documentElement.classList.toggle("dark")
@@ -13,13 +18,13 @@ const Navbar = () => {
   }
 
   return (
-    <div className='max-lg:h-[50px] lg:w-[75px] bg-white dark:bg-gray-700 flex lg:flex-col justify-between items-center lg:py-4 px-4'>
-      <div className='max-lg:hidden'>
+    <div className='max-lg:h-[55px] lg:w-[75px] bg-white dark:bg-gray-700 flex lg:flex-col justify-between  items-center py-1 lg:py-4 px-4'>
+      <NavLink to={'/'} className='max-lg:hidden'>
         <img src="/logo.png" alt="logo"
-          className='w-[55px]'
+          className='w-[40px]'
         />
-      </div>
-      <nav className='flex lg:flex-col gap-5 max-lg:gap-4 justify-center items-center'>
+      </NavLink>
+      <nav className='flex lg:flex-col gap-4 max-lg:gap-4 justify-center items-center'>
         <NavLink to={'/profile'} className={({ isActive }) => `navlink ${isActive ? 'bg-violet-50/70 dark:bg-gray-600/50' : ''}`}>
           {
             ({ isActive }) => (
@@ -189,14 +194,14 @@ const Navbar = () => {
 
           }
         </button>
-        <div className='h-9 w-9 flex justify-center items-center bg-pink-500 rounded-[50%] border-1'>
+        <div className={`h-9 w-9 flex justify-center items-center bg-[${colors[Math.floor((Math.random() * 12) + 1)]}] rounded-[50%] border-1`}>
           {false ?
             <img src="" alt=""
               className='h-8 w-8 rounded-[50%]'
             />
             :
-            <h2 className=' text-white'>{user.email[0].toUpperCase()}</h2>
-            }
+            <h2 className={`text-white `}>{user?.email[0].toUpperCase()}</h2>
+          }
         </div>
       </div>
     </div >

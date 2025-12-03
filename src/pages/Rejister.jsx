@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from 'yup'
 import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
@@ -19,13 +19,12 @@ const Register = () => {
     const [isShowPass, setIsShowPass] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const navigate = useNavigate()
 
 
 
     const formSchema = yup.object({
         email: yup.string().required().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must be a valid email address"),
-        username: yup.string().required().min(6, "username must have minimum 6 characters"),
+    username: yup.string().required().min(6, "username must have minimum 6 characters"),
         password: yup.string().required().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "use capital, small letters, number & min 8 chars")
     })
 
@@ -38,7 +37,7 @@ const Register = () => {
         formState: { errors, isSubmitSuccessful },
     } = useForm({
         resolver: yupResolver(formSchema),
-        mode: 'onChange'
+        mode:'onChange'
     });
 
     const mutation = useMutation({
@@ -48,11 +47,13 @@ const Register = () => {
     })
 
     const onSubmit = async (data) => {
+        // Enforce username length at runtime before any API calls
         if (!data.username || data.username.trim().length < 6) {
             setError('username', { type: 'manual', message: 'Username must be at least 6 characters' });
             return;
         }
 
+        // If the debounced availability check ran and found the username taken, block submit
         if (usernameTaken) {
             setError('username', { type: 'manual', message: 'Username is already taken' });
             return;
@@ -67,10 +68,8 @@ const Register = () => {
                 uid: res.user.uid,
                 email: data.email,
                 username: data.username,
-                isProfileComplete: false,
                 createdAt: new Date().getTime()
             });
-            navigate("/")
 
         } catch (error) {
             let message = "Registration failed. Please try again.";
@@ -83,6 +82,7 @@ const Register = () => {
         }
     }
 
+    // Debounce username input and query Firestore safely
     const usernameValue = watch("username") || "";
     const [debouncedUsername] = useDebounce(usernameValue, 700);
 
@@ -98,7 +98,9 @@ const Register = () => {
             });
             return user;
         },
+        // only run when username is long enough (>=6)
         enabled: debouncedUsername.length >= 6,
+        // cache briefly to avoid refetching while user pauses typing
         staleTime: 60 * 1000,
     });
 
@@ -124,7 +126,7 @@ const Register = () => {
                     <div className='h-[70px] w-full relative'>
                         <div className='h-full w-full flex justify-center items-center  absolute right-5'>
                             <img
-                                className='h-[70px] w-[70px]'
+                                className='h-[90%]'
                                 src="/logo.png" alt="logo" />
                             <h1 className='h-[65%] text-[1.6em] public-sans font-semibold '>Snap Talk</h1>
                         </div>
@@ -211,6 +213,7 @@ const Register = () => {
                             {errors.username?.message && (
                                 <span id="username-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.username.message}</span>
                             )}
+                            {/* Username availability */}
                             {debouncedUsername.length >= 6 && usernameLoading && (
                                 <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
                                     <div className="w-4 h-4 border-2 border-gray-300 border-t-indigo-500 rounded-full animate-spin" />
