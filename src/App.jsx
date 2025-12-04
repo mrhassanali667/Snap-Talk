@@ -80,7 +80,7 @@ function App() {
 
   return (
     <>
-      <div className='h-screen w-screen overflow-auto public-sans'>
+      <div className='min-h-[100dvh] w-screen overflow-auto public-sans'>
         {true ?
           <Routes>
             <Route path='/' element={<Dashboard />}>
