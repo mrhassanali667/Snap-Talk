@@ -30,7 +30,7 @@ const Dashboard = () => {
   })
 
   return (
-    <div className='h-full w-full flex justify-center items-center '>
+    <div className='h-full w-full flex justify-center items-center dark:bg-gray-900/95 bg-slate-100'>
       <div className='h-full w-full lg:max-w-[460px] flex max-lg:flex-col-reverse'>
         <Navbar />
         <Outlet />
