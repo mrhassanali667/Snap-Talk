@@ -18,7 +18,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className='max-lg:h-[65px] lg:w-[75px] bg-white dark:bg-gray-700 flex lg:flex-col justify-between  items-center py-1 lg:py-4 px-4 max-lg:px-2'>
+    <div className='max-lg:h-[65px] lg:w-[75px] bg-white dark:bg-gray-700 flex lg:flex-col justify-between  items-center py-1 lg:py-4 px-4 max-lg:px-3    '>
       <NavLink to={'/'} className='max-lg:hidden'>
         <img src="/logo.png" alt="logo"
           className='w-[40px]'
