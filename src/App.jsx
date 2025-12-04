@@ -80,33 +80,35 @@ function App() {
 
   return (
     <>
-      <div className='min-h-[100dvh] h-[100dvh] w-screen overflow-auto public-sans'>
-        {true ?
-          <Routes>
-            <Route path='/' element={<Dashboard />}>
-              <Route index element={<Users />} />
-              <Route path='/users' element={<Users />} />
-              <Route path='/contacts' element={<Contacts />} />
-              <Route path='/groups' element={<Groups />} />
-              <Route path='/settings' element={<Settings />} />
-              <Route path='/profile' element={<Profile />} />
-            </Route>
-            <Route path='/*' element={<Dashboard />} />
-          </Routes>
-          :
-          user ?
+      <div className='h-screen w-screen dark:bg-gray-900/95 bg-slate-100'>
+        <div className='min-h-[100dvh] h-[100dvh] w-screen overflow-auto public-sans'>
+          {true ?
             <Routes>
-              <Route path='/createprofile' element={<CreateProfile />} />
-              <Route path='/*' element={<CreateProfile />} />
+              <Route path='/' element={<Dashboard />}>
+                <Route index element={<Users />} />
+                <Route path='/users' element={<Users />} />
+                <Route path='/contacts' element={<Contacts />} />
+                <Route path='/groups' element={<Groups />} />
+                <Route path='/settings' element={<Settings />} />
+                <Route path='/profile' element={<Profile />} />
+              </Route>
+              <Route path='/*' element={<Dashboard />} />
             </Routes>
             :
-            <Routes>
-              <Route path='/' element={<Login />} />
-              <Route path='/register' element={<Rejister />} />
-              <Route path='/*' element={<Login />} />
-            </Routes>
+            user ?
+              <Routes>
+                <Route path='/createprofile' element={<CreateProfile />} />
+                <Route path='/*' element={<CreateProfile />} />
+              </Routes>
+              :
+              <Routes>
+                <Route path='/' element={<Login />} />
+                <Route path='/register' element={<Rejister />} />
+                <Route path='/*' element={<Login />} />
+              </Routes>
 
-        }
+          }
+        </div>
       </div>
     </>
   )
