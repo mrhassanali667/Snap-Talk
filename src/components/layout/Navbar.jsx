@@ -18,14 +18,14 @@ const Navbar = () => {
   }
 
   return (
-    <div className='max-lg:h-[55px] lg:w-[75px] bg-white dark:bg-gray-700 flex lg:flex-col justify-between  items-center py-1 lg:py-4 px-4 max-lg:px-2'>
+    <div className='max-lg:h-[65px] lg:w-[75px] bg-white dark:bg-gray-700 flex lg:flex-col justify-between  items-center py-1 lg:py-4 px-4 max-lg:px-2'>
       <NavLink to={'/'} className='max-lg:hidden'>
         <img src="/logo.png" alt="logo"
           className='w-[40px]'
         />
       </NavLink>
       <nav className='max-lg:w-[85%] flex lg:flex-col gap-4 max-lg:gap-1 justify-center max-lg:justify-between items-center'>
-        <NavLink to={'/profile'} className={({ isActive }) => `navlink ${isActive ? 'bg-violet-50/70 dark:bg-gray-600/50' : ''}`}>
+        <NavLink to={'/profile'} className={({ isActive }) => `navlink ${isActive ? 'bg-violet-50/70 dark:bg-gray-600/40' : ''}`}>
           {
             ({ isActive }) => (
 
