@@ -9,7 +9,7 @@ const SearchBar = () => {
           </svg>  
         </span>
         <input type="search"
-        className='w-[80%] h-full bg-transparent outline-none border-none text-zinc-700 dark:text-zinc-300  ml-2 placeholder:text-zinc-600'
+        className='w-[80%] h-full bg-transparent outline-none border-none text-zinc-700 dark:text-zinc-300  ml-2 placeholder:text-zinc-400'
         placeholder='Search'
          /> 
     </div>

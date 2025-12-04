@@ -13,7 +13,7 @@
     }
 
     .navlink {
-        @apply h-[60px] max-lg:h-[45px] w-[55px] flex justify-center items-center rounded-[10px]
+        @apply h-[60px] max-lg:h-[45px] max-lg:w-[45px] w-[55px] flex justify-center items-center rounded-[10px]
     }
 
 }
