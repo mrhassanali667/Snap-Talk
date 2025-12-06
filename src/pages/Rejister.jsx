@@ -124,11 +124,11 @@ const Register = () => {
             <div className='flex flex-col gap-1 w-full h-auto  max-w-[430px] py-[15px]'>
                 <div >
                     <div className='h-[70px] w-full relative'>
-                        <div className='h-full w-full flex justify-center items-center  absolute right-5'>
+                        <div className='h-full w-full flex gap-2 justify-center items-center  absolute right-4'>
                             <img
-                                className='h-[90%]'
+                                className='h-[35px]'
                                 src="/logo.png" alt="logo" />
-                            <h1 className='h-[65%] text-[1.6em] public-sans font-semibold '>Snap Talk</h1>
+                            <h1 className='h-[65%] flex items-center text-[1.6em] public-sans font-semibold '>Snap Talk</h1>
                         </div>
                     </div>
                     <div className='h-[80px] w-full flex flex-col justify-center items-center'>

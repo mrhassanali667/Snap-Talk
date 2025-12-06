@@ -2,9 +2,15 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-body{
+body {
     @apply bg-slate-100 dark:bg-slate-900/95 transition-colors duration-300;
 }
+
+.x-scroll::-webkit-scrollbar {
+    @apply h-[0px]; 
+}
+
+
 
 @layer components {
 
