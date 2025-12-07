@@ -7,10 +7,24 @@ body {
 }
 
 .x-scroll::-webkit-scrollbar {
-    @apply h-[0px]; 
+    @apply h-[0px];
 }
 
+.users-list::-webkit-scrollbar {
+    @apply w-[0px] sm:w-[7px]
+}
 
+.users-list::-webkit-scrollbar-track {
+    @apply bg-gray-800/95
+}
+
+.users-list::-webkit-scrollbar-thumb {
+    @apply bg-gray-700/95 rounded-[50px];
+}
+
+.users-list::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600/95;
+}
 
 @layer components {
 
