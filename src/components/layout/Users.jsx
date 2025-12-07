@@ -8,7 +8,7 @@ const Users = () => {
     <div className='h-full w-full flex flex-col gap-1 bg-slate-100 dark:bg-gray-800/95 py-5 overflow-hidden'>
       <div className='flex flex-col gap-3'>
         <Heading name={'Chats'} />
-        <div className='py-2 px-6'>
+        <div className='py-2 px-6 lg:px-6 '>
           <SearchBar />
         </div>
       </div>

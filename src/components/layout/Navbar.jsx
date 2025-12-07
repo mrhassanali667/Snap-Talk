@@ -19,7 +19,7 @@ const Navbar = () => {
 
   return (
     <div className='max-lg:h-[65px] lg:w-[75px] bg-white dark:bg-gray-700 flex lg:flex-col justify-between  items-center py-1 lg:py-4 px-4 max-lg:px-3    '>
-      <NavLink to={'/'} className='max-lg:hidden'>
+      <NavLink to={'/'} className='max-lg:hidden' >
         <img src="/logo.png" alt="logo"
           className='w-[40px]'
         />
@@ -48,10 +48,9 @@ const Navbar = () => {
           }
 
         </NavLink>
-        <NavLink to={'/users'} className={({ isActive }) => `navlink ${isActive ? 'bg-violet-50/70 dark:bg-gray-600/50' : ''}`}>
+        <NavLink to={'/'} end className={({ isActive }) => `navlink ${isActive ? 'bg-violet-50/70 dark:bg-gray-600/50' : ''}`}>
           {
             ({ isActive }) => (
-
               <svg
                 className={`h-7 w-7 lg:w-8 lg:h-8  ${isActive ? 'text-[#7269ef] ' : 'text-zinc-400'} `}
                 aria-hidden="true"

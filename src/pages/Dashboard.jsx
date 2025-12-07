@@ -36,10 +36,8 @@ const Dashboard = () => {
         <Outlet />
       </div>
       {isShowChat &&
-        <div className='h-full w-full bg-neutral-500 '>
-          <Chatbox />
-        </div>
-      }
+        <Chatbox />
+      } 
     </div>
   )
 }

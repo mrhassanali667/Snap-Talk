@@ -10,20 +10,24 @@ body {
     @apply h-[0px];
 }
 
+.hide-scroll::-webkit-scrollbar {
+    @apply w-[0px] h-[0px];
+}
+
 .users-list::-webkit-scrollbar {
     @apply w-[0px] sm:w-[7px]
 }
 
 .users-list::-webkit-scrollbar-track {
-    @apply bg-gray-800/95
+    @apply bg-slate-100 dark:bg-gray-800/95
 }
 
 .users-list::-webkit-scrollbar-thumb {
-    @apply bg-gray-700/95 rounded-[50px];
+    @apply bg-slate-300 dark:bg-gray-700/95 rounded-[50px];
 }
 
 .users-list::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-600/95;
+    @apply bg-slate-400/65;
 }
 
 @layer components {
