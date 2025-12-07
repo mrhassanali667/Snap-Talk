@@ -19,7 +19,7 @@ const Users = () => {
           </div>
         )}
       </div>
-      <div className='h-[72%] w-full'>
+      <div className='h-[75%] w-full'>
       <UsersList/>
       </div>
     </div>

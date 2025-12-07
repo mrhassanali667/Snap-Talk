@@ -9,7 +9,7 @@ const UsersList = () => {
   return (
     <div onScroll={fun} className='h-full w-full flex gap-1 flex-col overflow-y-auto users-list'>
       {[...Array(20)].map((_, index) =>
-        <div key={index} className='min-h-[70px] w-full bg-gray-900  flex flex-col justify-end items-center '>
+        <div key={index} className='min-h-[70px] w-full bg-slate-300 dark:bg-gray-900  flex flex-col justify-end items-center '>
 
         </div>
       )}
