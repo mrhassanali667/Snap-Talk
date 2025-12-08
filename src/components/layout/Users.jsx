@@ -5,7 +5,7 @@ import UsersList from '../specific/UsersList.jsx'
 
 const Users = () => {
   return (
-    <div className='h-full w-full flex flex-col gap-1 bg-slate-100 dark:bg-gray-700/70 py-5 overflow-hidden'>
+    <div className='h-full w-full flex flex-col gap-1 bg-slate-100 dark:bg-gray-800/70 py-5 overflow-hidden'>
       <div className='flex flex-col gap-3'>
         <Heading name={'Chats'} />
         <div className='py-2 px-6 lg:px-6 '>
@@ -20,7 +20,7 @@ const Users = () => {
         )}
       </div>
       <div>
-        <h2 className='px-6 py-1 text-[1em] font-semibold font-manrope  dark:text-slate-100 text-zinc-700'>Recent</h2>
+        <h2 className='px-6 pt-[3px] pb-3 text-[1em] font-semibold font-manrope  dark:text-slate-100 text-zinc-700'>Recent</h2>
       </div>
       <div className='h-[80%] w-full'>
       <UsersList/>

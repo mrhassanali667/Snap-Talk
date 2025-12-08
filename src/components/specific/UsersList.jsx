@@ -17,7 +17,7 @@ const UsersList = () => {
   return (
     <div onScroll={handelScrollBar} className={`h-full w-full flex gap-1 flex-col overflow-y-auto hide-scroll ${showScrollBar ? 'users-list' : ''}`}>
       {[...Array(15).fill({ name: "User Name ",lastMessage:"Hey! there I'm available" })].map(({name,lastMessage}, index) =>
-        <div onClick={() => dispatch(showChat())} key={index} className='px-6 py-2 min-h-[70px] w-full flex items-center hover:bg-slate-200/50 dark:hover:bg-gray-700/50 rounded-lg cursor-pointer '>
+        <div onClick={() => dispatch(showChat())} key={index} className='px-3 py-2 min-h-[70px] w-full flex items-center hover:bg-slate-200/50 dark:hover:bg-gray-700/50 rounded-lg cursor-pointer '>
           <div className='h-full w-[55px] flex justify-center items-center'>
             <div className='flex justify-center items-center'>
               {false ?
