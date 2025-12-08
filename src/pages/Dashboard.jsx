@@ -8,11 +8,12 @@ import { Outlet } from 'react-router'
 const Dashboard = () => {
 
   const dispatch = useDispatch()
+  const [initialHeight, setInitialHeight] = useState(0)
   let isShowChat = useSelector(state => state.chat.isShowChat)
   console.log(isShowChat)
 
   useEffect(() => {
-
+    setInitialHeight(innerHeight)
     if (innerWidth < 1024) {
       dispatch(hideChat())
     } else {
@@ -21,8 +22,9 @@ const Dashboard = () => {
 
   }, [])
 
+
   window.addEventListener("resize", () => {
-    if (innerWidth < 1024) {
+    if (innerWidth < 1024 ) {
       dispatch(hideChat())
     } else {
       dispatch(showChat())
@@ -30,14 +32,14 @@ const Dashboard = () => {
   })
 
   return (
-    <div className='h-full w-full flex justify-center items-center dark:bg-gray-900/95 bg-slate-100'>
+    <div className='h-full w-full flex justify-center items-center dark:bg-gray-900/95 bg-slate-100  '>
       <div className='h-full w-full lg:max-w-[460px] flex max-lg:flex-col-reverse'>
         <Navbar />
         <Outlet />
       </div>
       {isShowChat &&
         <Chatbox />
-      } 
+      }
     </div>
   )
 }

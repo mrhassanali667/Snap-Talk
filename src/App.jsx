@@ -81,7 +81,7 @@ function App() {
   return (
     <>
       <div className='h-screen w-screen dark:bg-gray-900/95 bg-slate-100'>
-        <div className='min-h-[100dvh] h-[100dvh] w-screen overflow-auto public-sans'>
+        <div className='min-h-[100dvh] h-[100dvh] w-screen overflow-auto public-sans '>
           {true ?
             <Routes>
               <Route path='/' element={<Dashboard />}>
