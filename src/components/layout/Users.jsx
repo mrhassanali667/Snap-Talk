@@ -12,12 +12,19 @@ const Users = () => {
           <SearchBar />
         </div>
       </div>
-      <div className='pr-2'>
+      <div className='pr-1'>
         <div className='min-h-[120px] h-[100px]  w-full py-2 px-5 flex  gap-1 relative overflow-x-auto x-scroll '>
           {["Hassan", "Usama", "Sufiyan", "Huzaifa", "Ali", "Murtaza", "Zohan"].map((name, index) =>
             <div key={index} className='h-full min-w-[70px] flex flex-col  items-center  cursor-pointer  '>
-              <div>
+              <div>{true ?
+                < img
+                  src="/images/DP.jpg" alt=""
+                  className='h-[55px] w-[55px] rounded-full  border-2 border-indigo-500'
+                />
+
+                :
                 <div className='h-[55px] w-[55px] rounded-full bg-slate-300 dark:bg-gray-900 border-2 border-indigo-500 '></div>
+              }
               </div>
               <div>
                 <p className='text-[0.85em] dark:text-slate-200 text-center text-zinc-700 font-semibold mt-2'>{name}</p>

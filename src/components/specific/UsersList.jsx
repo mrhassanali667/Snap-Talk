@@ -37,10 +37,13 @@ const UsersList = () => {
         <div onClick={() => dispatch(showChat())} key={index} className='px-3 py-2 min-h-[70px] w-full flex items-center hover:bg-slate-200/50 dark:hover:bg-gray-700/50  cursor-pointer '>
           <div className='h-full w-[55px] flex justify-center items-center'>
             <div className='flex justify-center items-center'>
-              {false ?
-                <img src="" alt="" />
+              {true ?
+                <img
+                  src="/images/DP.jpg" alt=""
+                  className='h-[50px] w-[50px] rounded-full bg-slate-300 dark:bg-gray-800 '
+                />
                 :
-                <div className='h-[45px] w-[45px] rounded-full bg-slate-300 dark:bg-gray-800 '></div>
+                <div className='h-[50px] w-[50px] rounded-full bg-slate-300 dark:bg-gray-800 '></div>
               }
             </div>
           </div>
