@@ -92,8 +92,9 @@ const Register = () => {
     const { data: usernameTaken, isLoading: usernameLoading } = useQuery({
         queryKey: ["username", debouncedUsername],
         queryFn: async () => {
-            axios.get(`https://snap-talk-backend-server.vercel.app/api/auth/check-username?username=${debouncedUsername}`)
+            axios.get(`https://snap-talk-backend-server.vercel.app/api/users/check-username?username=${debouncedUsername}`)
                 .then((res) => {
+                    console.log("Username availability response:", res.data);
                     return res.data.data.available;
                 })
                 .catch((err) => {
