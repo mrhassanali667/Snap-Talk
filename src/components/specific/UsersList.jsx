@@ -24,7 +24,7 @@ const UsersList = () => {
     { name: "Ali ", lastMessage: "Hey! there I'm available" },
     { name: "Murtaza ", lastMessage: "Hey! there I'm available" },
     { name: "Zohan ", lastMessage: "Hey! there I'm available" },
-    { name: "Shahzaib", lastMessage: "Hey! there I'm available" },
+    { name: "Shahzaib Sialkoti", lastMessage: "Hey! there I'm available" },
     { name: "rafey", lastMessage: "Hey! there I'm available" },
     { name: "Raza", lastMessage: "Hey! there I'm available" },
     { name: "Muzzammill", lastMessage: "Hey! there I'm available" }
@@ -40,10 +40,10 @@ const UsersList = () => {
               {true ?
                 <img
                   src="/images/DP.jpg" alt=""
-                  className='h-[50px] w-[50px] rounded-full bg-slate-300 dark:bg-gray-800 '
+                  className='h-[45px] w-[45px] rounded-full bg-slate-300 dark:bg-gray-800 '
                 />
                 :
-                <div className='h-[50px] w-[50px] rounded-full bg-slate-300 dark:bg-gray-800 '></div>
+                <div className='h-[45px] w-[45px] rounded-full bg-slate-300 dark:bg-gray-800 '></div>
               }
             </div>
           </div>

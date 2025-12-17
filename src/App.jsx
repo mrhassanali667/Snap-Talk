@@ -61,8 +61,7 @@ function App() {
   if (isLoading) {
     return (
       <>
-        <div className='h-screen w-screen flex justify-center items-center'>
-
+        <div className='h-screen w-screen bg-white dark:bg-gray-900/95 flex justify-center items-center'>
           <div className="grid gap-3">
             <h2
               className="text-4xl font-manrope font-extrabold text-transparent bg-indigo-600  bg-clip-text flex items-center">
@@ -82,7 +81,7 @@ function App() {
     <>
       <div className='h-screen w-screen dark:bg-gray-900/95 bg-slate-100'>
         <div className='min-h-[100dvh] h-[100dvh] w-screen overflow-auto public-sans '>
-          {true ?
+          {user ?
             <Routes>
               <Route path='/' element={<Dashboard />}>
                 <Route index element={<Users />} />
@@ -95,17 +94,12 @@ function App() {
               <Route path='/*' element={<Dashboard />} />
             </Routes>
             :
-            user ?
-              <Routes>
-                <Route path='/createprofile' element={<CreateProfile />} />
-                <Route path='/*' element={<CreateProfile />} />
-              </Routes>
-              :
-              <Routes>
-                <Route path='/' element={<Login />} />
-                <Route path='/register' element={<Rejister />} />
-                <Route path='/*' element={<Login />} />
-              </Routes>
+            <Routes>
+              <Route path='/' element={<Login />} />
+              <Route path='/register' element={<Rejister />} />
+              <Route path='/create-profile' element={<CreateProfile />} />
+              <Route path='/*' element={<Login />} />
+            </Routes>
 
           }
         </div>

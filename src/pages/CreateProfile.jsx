@@ -90,7 +90,7 @@ const CreateProfile = () => {
                                 <div className='h-full w-full flex gap-2 justify-center items-center absolute right-4'>
                                     <img
                                         className='h-[35px]'
-                                        src="/logo.png" alt="logo" />
+                                        src="/images/logo.png" alt="logo" />
                                     <h1 className='h-[65%] flex items-center text-[1.6em] public-sans font-semibold '>Snap Talk</h1>
                                 </div>
                             </div>

@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { Link } from 'react-router'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from 'yup'
-import { createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth, db } from '../firebase/firebaseConfig';
 import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { useQuery, useMutation } from '@tanstack/react-query'
 import MiniLoader from '../components/common/MiniLoader';
-
 import { useDebounce } from "use-debounce";
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../redux/auth/authSlice';
 
 
 
@@ -19,12 +20,13 @@ const Register = () => {
     const [isShowPass, setIsShowPass] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const dispatch = useDispatch()
 
 
 
     const formSchema = yup.object({
         email: yup.string().required().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must be a valid email address"),
-    username: yup.string().required().min(6, "username must have minimum 6 characters"),
+        username: yup.string().required().min(6, "username must have minimum 6 characters"),
         password: yup.string().required().matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "use capital, small letters, number & min 8 chars")
     })
 
@@ -37,12 +39,12 @@ const Register = () => {
         formState: { errors, isSubmitSuccessful },
     } = useForm({
         resolver: yupResolver(formSchema),
-        mode:'onChange'
+        mode: 'onChange'
     });
 
     const mutation = useMutation({
         mutationFn: (user) => {
-            return addDoc(collection(db, "users"), user)
+            return axios.post('https://snap-talk-backend-server.vercel.app/api/auth/register', { ...user })
         },
     })
 
@@ -63,15 +65,16 @@ const Register = () => {
             clearErrors('username');
             setErrorMessage("");
             setIsSubmitting(true);
-            const res = await createUserWithEmailAndPassword(auth, data.email, data.password);
-            await mutation.mutateAsync({
-                uid: res.user.uid,
+            const { data } = await mutation.mutateAsync({
                 email: data.email,
                 username: data.username,
-                createdAt: new Date().getTime()
+                password: data.password,
             });
+            dispatch(setUser(data.user));
+            console.log("User registered:", user);
 
         } catch (error) {
+            console.error("Registration error:", error);
             let message = "Registration failed. Please try again.";
             if (error.code === "auth/email-already-in-use") {
                 message = "This email is already registered. Please use a different email or sign in.";
@@ -86,17 +89,17 @@ const Register = () => {
     const usernameValue = watch("username") || "";
     const [debouncedUsername] = useDebounce(usernameValue, 700);
 
-    const { data: usernameData, isLoading: usernameLoading } = useQuery({
+    const { data: usernameTaken, isLoading: usernameLoading } = useQuery({
         queryKey: ["username", debouncedUsername],
         queryFn: async () => {
-            if (!debouncedUsername) return null;
-            const q = query(collection(db, "users"), where("username", "==", debouncedUsername));
-            const snap = await getDocs(q);
-            let user = null;
-            snap.forEach((doc) => {
-                user = { ...doc.data(), id: doc.id };
-            });
-            return user;
+            axios.get(`https://snap-talk-backend-server.vercel.app/api/auth/check-username?username=${debouncedUsername}`)
+                .then((res) => {
+                    return res.data.data.available;
+                })
+                .catch((err) => {
+                    console.error("Error checking username availability:", err);
+                    return false; // Assume not taken on error
+                });
         },
         // only run when username is long enough (>=6)
         enabled: debouncedUsername.length >= 6,
@@ -104,19 +107,11 @@ const Register = () => {
         staleTime: 60 * 1000,
     });
 
-    // helper flags
-    const usernameTaken = !!usernameData;
-
-
-
     const passVisiblity = (e) => {
         e.preventDefault();
         setIsShowPass(!isShowPass)
 
     }
-
-
-
 
     return (
         <div className='h-full w-full flex justify-center lg:items-center bg-violet-50 '>

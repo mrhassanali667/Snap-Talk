@@ -9,6 +9,8 @@ const Chatbox = () => {
 
   return (
     <div className='h-full w-full flex gap-3 max-lg:h-[100dvh] max-lg:w-screen bg-white dark:bg-gray-900 text-white p-5 max-lg:absolute'>
+      <nav>
+      </nav>
       {innerWidth < 1024 &&
         <button onClick={() => dispatch(hideChat())} className='h-10 border-1 p-2'>
           back
