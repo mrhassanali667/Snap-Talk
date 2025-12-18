@@ -18,45 +18,33 @@ import Contacts from './components/layout/Contacts.jsx';
 import Settings from './components/layout/Settings.jsx';
 import Profile from './components/layout/Profile.jsx';
 import Groups from './components/layout/Groups.jsx';
+import axios from 'axios';
 
 
 
 function App() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.user)
-  let isLoading = useSelector((state) => state.auth.isLoading)
-  let isProfileComplete = useSelector((state) => state.profile.isProfileComplete)
-  let isProfileLoading = useSelector((state) => state.profile.isProfileLoading)
+
+  const { data: userData, error: userError, isError, isLoading, isSuccess } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => {
+      const res = await axios.get(`http://localhost:3000/api/auth/user`, { withCredentials: true });
+      return res.data.user;
+    },
+    retry: 0,
+  });
+
   useEffect(() => {
+    if (userData) {
+      dispatch(setUser(userData));
+    } else {
+      dispatch(clearUser());
+    }
+  }, [userData, dispatch]);
 
-    (async () => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          console.log(user)
-          console.log(user)
-          dispatch(setUser({
-            uid: user?.uid,
-            email: user?.email,
-            displayName: user?.displayName,
-            photoURL: user?.photoURL,
-            emailVerified: user?.emailVerified,
-            metadata: {
-              createdAt: user?.metadata.createdAt,
-              lastLoginAt: user?.metadata.lastLoginAt,
-            }
-          }))
-        } else {
-          dispatch(clearUser())
-        }
-      });
-    })()
-
-
-
-  }, [])
-
-  console.log(user)
-
+  console.log("Current user from Redux store:", userData);
+  console.log("Current user error:", userError);
 
   if (isLoading) {
     return (
@@ -67,7 +55,7 @@ function App() {
               className="text-4xl font-manrope font-extrabold text-transparent bg-indigo-600  bg-clip-text flex items-center">
               L <div
                 className="items-center justify-center rounded-md w-6 h-6 flex bg-indigo-500 animate-spin">
-                <div className="h-4 w-4 rounded-md bg-white "></div>
+                <div className="h-4 w-4 rounded-md bg-white dark:bg-gray-900/95 "></div>
               </div>
               ading...
             </h2>
@@ -90,6 +78,7 @@ function App() {
                 <Route path='/groups' element={<Groups />} />
                 <Route path='/settings' element={<Settings />} />
                 <Route path='/profile' element={<Profile />} />
+                <Route path='/*' element={<Users />} />
               </Route>
               <Route path='/*' element={<Dashboard />} />
             </Routes>

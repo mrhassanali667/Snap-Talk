@@ -1,11 +1,15 @@
 import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../firebase/firebaseConfig'
 import MiniLoader from '../components/common/MiniLoader'
+import { useDispatch } from 'react-redux'
+import { useMutation } from '@tanstack/react-query'
+import axios from 'axios'
+import { setUser } from '../redux/auth/authSlice.js'
 
 
 
@@ -13,10 +17,12 @@ const Login = () => {
     const [isShowPass, setIsShowPass] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
 
     const formSchema = yup.object({
-        email: yup.string().required("email is required").email().matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, "email must be a valid email"),
+        usernameOrEmail: yup.string().required("email is required").min(3, "username or email must be at least 3 characters"),
         password: yup.string().required("password is required").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, "use capital, small letters, number & min 8 chars")
     })
 
@@ -26,19 +32,33 @@ const Login = () => {
         watch,
         formState: { errors, isSubmitSuccessful },
     } = useForm({
-        resolver: yupResolver(formSchema)
+        resolver: yupResolver(formSchema),
+        mode: 'onChange',
     });
 
-    const onSubmit = async ({ email, password }) => {
+    const mutation = useMutation({
+        mutationFn: (user) => {
+            return axios.post('http://localhost:3000/api/auth/login', { ...user }, { withCredentials: true })
+        },
+    })
+
+    const onSubmit = async ({usernameOrEmail, password }) => {
         try {
             setErrorMessage("");
             setIsSubmitting(true);
-            await signInWithEmailAndPassword(auth, email, password);
+            const { data } = await mutation.mutateAsync({
+                usernameOrEmail: usernameOrEmail,
+                password: password,
+            });
+            console.log(data);
+            dispatch(setUser(data.user));
+            navigate('/');
         } catch (error) {
-            let message = "Login failed. Please check your email and password.";
-            if (error.code === "auth/user-not-found") {
-                message = "No account found with this email. Please register first.";
-            } else if (error.code === "auth/wrong-password") {
+            console.error("Login error:", error);
+            let message = "Login failed. Please check your username or email and password.";
+            if (error.message === "user not found") {
+                message = "No account found with this username or email. Please register first.";
+            } else if (error.message === "incorrect password") {
                 message = "Incorrect password. Please try again.";
             }
             setErrorMessage(message);
@@ -47,15 +67,11 @@ const Login = () => {
         }
     }
 
-
     const passVisiblity = (e) => {
         e.preventDefault();
         setIsShowPass(!isShowPass)
 
     }
-
-
-
 
     return (
         <div className='h-full w-full flex justify-center lg:items-center bg-violet-50 '>
@@ -106,15 +122,15 @@ const Login = () => {
                                 </span>
                                 <input
                                     id="email"
-                                    className={`h-full w-[90%] outline-none px-3 border-[1px] placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.email ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
-                                    type="email"
-                                    placeholder='Enter your email'
-                                    {...register("email")}
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px] placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.usernameOrEmail ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    type="text"
+                                    placeholder='Enter your username or email'
+                                    {...register("usernameOrEmail")}
                                     aria-describedby="email-error"
                                 />
                             </div>
-                            {errors.email?.message && (
-                                <span id="email-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.email.message}</span>
+                            {errors.usernameOrEmail?.message && (
+                                <span id="email-error" role="alert" className='text-[0.8em] text-red-500 font-normal mt-1'>{errors.usernameOrEmail.message}</span>
                             )}
                         </div>
                         <div className='text-zinc-600 flex flex-col gap-2'>
@@ -143,7 +159,7 @@ const Login = () => {
                                 </span>
                                 <input
                                     id="password"
-                                    className={`h-full w-[90%] outline-none px-3 border-[1px]  placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.email ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px]  placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.usernameOrEmail ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
                                     type={isShowPass ? "text" : "password"}
                                     placeholder='Enter your password'
                                     {...register("password")}

@@ -1,16 +1,27 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { NavLink } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { NavLink, useNavigate } from 'react-router'
 import { getRandomDarkColors } from '../../utils/index.js'
+import axios from 'axios'
+import { clearUser } from '../../redux/auth/authSlice.js'
 
 const Navbar = () => {
 
   const user = useSelector((state) => state.auth.user)
-  const [isDark, setIsDark] = useState(true)
+  const [isDark, setIsDark] = useState(false)
   const colors = ["bg-slate-700", "bg-gray-700", "bg-zinc-700", "bg-neutral-700", "bg-stone-700", "bg-red-700", "bg-orange-700", "bg-amber-700", "bg-yellow-700", "bg-lime-700", "bg-green-700", "bg-emerald-700", "bg-teal-700", "bg-cyan-700", "bg-sky-700", "bg-blue-700", "bg-indigo-700", "bg-violet-700", "bg-purple-700", "bg-fuchsia-700", "bg-pink-700", "bg-rose-700"];
+  const dispatch = useDispatch();
 
-
-
+  const logout = () => {
+    axios.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true })
+      .then((response) => {
+        console.log('Logout successful:', response.data);
+        dispatch(clearUser());
+      })
+      .catch((error) => {
+        console.error('There was an error logging out!', error);
+      });
+  }
 
   const toggleTheme = () => {
     document.documentElement.classList.toggle("dark")
@@ -19,7 +30,7 @@ const Navbar = () => {
 
   return (
     <div className='max-lg:h-[65px] lg:w-[75px] bg-white dark:bg-gray-800 flex lg:flex-col justify-between  items-center py-1 lg:py-4 px-4 max-lg:px-3    '>
-      <NavLink to={'/'} className='max-lg:hidden' >
+      <NavLink onClick={logout} to={'/'} className='max-lg:hidden' >
         <img src="/images/logo.png" alt="logo"
           className='w-[40px]'
         />

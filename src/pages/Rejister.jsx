@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { set, useForm } from 'react-hook-form';
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from 'yup'
 import { auth, db } from '../firebase/firebaseConfig';
@@ -21,6 +21,7 @@ const Register = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const dispatch = useDispatch()
+    const navigate = useNavigate();
 
 
 
@@ -44,13 +45,28 @@ const Register = () => {
 
     const mutation = useMutation({
         mutationFn: (user) => {
-            return axios.post('https://snap-talk-backend-server.vercel.app/api/auth/register', { ...user })
+            return axios.post('http://localhost:3000/api/auth/register', { ...user },{withCredentials:true})
         },
     })
 
-    const onSubmit = async (data) => {
+    // Debounce username input and query Firestore safely
+    const usernameValue = watch("username") || "";
+    const [debouncedUsername] = useDebounce(usernameValue, 700);
+
+    const { data: usernameTaken, isLoading: usernameLoading } = useQuery({
+        queryKey: ["username", debouncedUsername],
+        queryFn: async () => {
+            console.log(debouncedUsername)
+            const res = await axios.get(`http://localhost:3000/api/users/check-username?username=${debouncedUsername}`)
+            return !res?.data?.data?.available;
+        },
+        // only run when username is long enough (>=6)
+        enabled: debouncedUsername.length >= 6,
+    });
+
+    const onSubmit = async ({ username, email, password }) => {
         // Enforce username length at runtime before any API calls
-        if (!data.username || data.username.trim().length < 6) {
+        if (!username || username.trim().length < 6) {
             setError('username', { type: 'manual', message: 'Username must be at least 6 characters' });
             return;
         }
@@ -66,17 +82,17 @@ const Register = () => {
             setErrorMessage("");
             setIsSubmitting(true);
             const { data } = await mutation.mutateAsync({
-                email: data.email,
-                username: data.username,
-                password: data.password,
+                email: email,
+                username: username,
+                password: password,
             });
+            console.log(data);
             dispatch(setUser(data.user));
-            console.log("User registered:", user);
-
+            navigate('/');
         } catch (error) {
             console.error("Registration error:", error);
             let message = "Registration failed. Please try again.";
-            if (error.code === "auth/email-already-in-use") {
+            if (error.message === "email already in use.") {
                 message = "This email is already registered. Please use a different email or sign in.";
             }
             setErrorMessage(message);
@@ -84,29 +100,6 @@ const Register = () => {
             setIsSubmitting(false);
         }
     }
-
-    // Debounce username input and query Firestore safely
-    const usernameValue = watch("username") || "";
-    const [debouncedUsername] = useDebounce(usernameValue, 700);
-
-    const { data: usernameTaken, isLoading: usernameLoading } = useQuery({
-        queryKey: ["username", debouncedUsername],
-        queryFn: async () => {
-            axios.get(`https://snap-talk-backend-server.vercel.app/api/users/check-username?username=${debouncedUsername}`)
-                .then((res) => {
-                    console.log("Username availability response:", res.data);
-                    return res.data.data.available;
-                })
-                .catch((err) => {
-                    console.error("Error checking username availability:", err);
-                    return false; // Assume not taken on error
-                });
-        },
-        // only run when username is long enough (>=6)
-        enabled: debouncedUsername.length >= 6,
-        // cache briefly to avoid refetching while user pauses typing
-        staleTime: 60 * 1000,
-    });
 
     const passVisiblity = (e) => {
         e.preventDefault();
