@@ -29,7 +29,7 @@ function App() {
   const { data: userData, error: userError, isError, isLoading, isSuccess } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      const res = await axios.get(`http://localhost:3000/api/auth/user`, { withCredentials: true });
+      const res = await axios.get(`https://snap-talk-backend-server.vercel.app/api/auth/user`, { withCredentials: true });
       return res.data.user;
     },
     retry: 0,
