@@ -38,7 +38,7 @@ const Login = () => {
 
     const mutation = useMutation({
         mutationFn: (user) => {
-            return axios.post('http://localhost:3000/api/auth/login', { ...user }, { withCredentials: true })
+            return axios.post('https://snap-talk-backend-server.vercel.app/login', { ...user }, { withCredentials: true })
         },
     })
 

@@ -45,7 +45,7 @@ const Register = () => {
 
     const mutation = useMutation({
         mutationFn: (user) => {
-            return axios.post('http://localhost:3000/api/auth/register', { ...user },{withCredentials:true})
+            return axios.post('https://snap-talk-backend-server.vercel.app/register', { ...user },{withCredentials:true})
         },
     })
 
@@ -57,7 +57,7 @@ const Register = () => {
         queryKey: ["username", debouncedUsername],
         queryFn: async () => {
             console.log(debouncedUsername)
-            const res = await axios.get(`http://localhost:3000/api/users/check-username?username=${debouncedUsername}`)
+            const res = await axios.get(`https://snap-talk-backend-server.vercel.app/api/users/check-username?username=${debouncedUsername}`)
             return !res?.data?.data?.available;
         },
         // only run when username is long enough (>=6)
