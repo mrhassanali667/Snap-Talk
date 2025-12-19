@@ -45,7 +45,7 @@ const Register = () => {
 
     const mutation = useMutation({
         mutationFn: (user) => {
-            return axios.post('https://snap-talk-backend-server.vercel.app/register', { ...user },{withCredentials:true})
+            return axios.post('https://snap-talk-backend-server.vercel.app/api/auth/register', { ...user },{withCredentials:true})
         },
     })
 
