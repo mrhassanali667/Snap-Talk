@@ -51,7 +51,7 @@ const Chatbox = () => {
       </main>
       <footer className='min-h-[55px] flex justify-end items-center w-full bg-white dark:bg-gray-900 border-t-1  dark:border-gray-700 px-2 '>
         <div className='h-full w-full flex items-center'>
-          <input type="text" placeholder='Type a message...' className='w-full grow h-10 px-3 rounded-lg border-1 border-gray-400 focus:outline-none focus:border-blue-500 dark:bg-gray-800 dark:text-white' />
+          <input type="text" placeholder='Type a message...' className='w-full grow h-10 px-3 rounded-lg border-1 border-gray-400 outline-none focus:border-blue-500 bg-slate-200 dark:bg-gray-800 text-zinc-800 dark:text-white' />
           <span className='h-full w-[45px] flex justify-center items-center '>
             <svg
               className="w-5 h-5 text-blue-500  cursor-pointer"
@@ -91,7 +91,7 @@ const Chatbox = () => {
             </svg>
           </span>
           <span>
-            <button className='bg-blue-500 hover:bg-blue-600 text-white font-semibold px-3 py-2 rounded-lg'>
+            <button className='h-full bg-blue-500 hover:bg-blue-600 text-white font-semibold px-3 py-2 rounded-lg'>
               <svg
                 className="w-6 h-6 text-white"
                 aria-hidden="true"
