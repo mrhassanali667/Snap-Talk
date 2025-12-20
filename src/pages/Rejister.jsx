@@ -57,7 +57,7 @@ const Register = () => {
         queryKey: ["username", debouncedUsername],
         queryFn: async () => {
             console.log(debouncedUsername)
-            const res = await axios.get(`https://snap-talk-backend-server.vercel.app/api/users/check-username?username=${debouncedUsername}`)
+            const res = await axios.get(`https://snap-talk-backend-server.vercel.app/api/users/check-username?username=${debouncedUsername}`,{withCredentials:true});
             return !res?.data?.data?.available;
         },
         // only run when username is long enough (>=6)
@@ -249,7 +249,7 @@ const Register = () => {
                                     aria-describedby="password-error"
                                 />
                                 {isShowPass ?
-                                    <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
+                                    <button onClick={passVisiblity} className='h-full w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
                                         <svg
                                             className="w-5 h-5 text-gray-400"
                                             aria-hidden="true"
@@ -271,7 +271,7 @@ const Register = () => {
 
                                     </button>
                                     :
-                                    <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
+                                    <button onClick={passVisiblity} className='h-full w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
                                         <svg
                                             className="w-5 h-5 text-gray-400 "
                                             aria-hidden="true"
