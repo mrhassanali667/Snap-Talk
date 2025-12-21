@@ -26,7 +26,7 @@ function App() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.user)
 
-  const { data: userData, error: userError, isError, isLoading, isSuccess } = useQuery({
+  const { data: userData, error: userError, isLoading, } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
       const res = await axios.get(`https://snap-talk-backend-server.vercel.app/api/auth/user`, { withCredentials: true });
@@ -49,18 +49,9 @@ function App() {
   if (isLoading) {
     return (
       <>
-        <div className='h-screen w-screen bg-white dark:bg-gray-900/95 flex justify-center items-center'>
-          <div className="grid gap-3">
-            <h2
-              className="text-4xl font-manrope font-extrabold text-transparent bg-indigo-600  bg-clip-text flex items-center">
-              L <div
-                className="items-center justify-center rounded-md w-6 h-6 flex bg-indigo-500 animate-spin">
-                <div className="h-4 w-4 rounded-md bg-white dark:bg-gray-900/95 "></div>
-              </div>
-              ading...
-            </h2>
-          </div>
-        </div>
+        <div className='h-screen w-screen bg-white dark:bg-gray-900 flex justify-center items-center'>
+          <div className="loader"></div>
+        </div>  
       </>
     )
   }

@@ -108,7 +108,7 @@ const Register = () => {
     }
 
     return (
-        <div className='h-full w-full flex justify-center lg:items-center bg-violet-50 '>
+        <div className='h-full w-full flex justify-center lg:items-center bg-slate-50 '>
 
             <div className='flex flex-col gap-1 w-full h-auto  max-w-[430px] py-[15px]'>
                 <div >

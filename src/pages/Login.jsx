@@ -74,7 +74,7 @@ const Login = () => {
     }
 
     return (
-        <div className='h-full w-full flex justify-center lg:items-center bg-violet-50 '>
+        <div className='h-full w-full flex justify-center lg:items-center bg-slate-50 '>
             <div className='flex flex-col gap-1 w-full  max-w-[430px] py-[15px]'>
                 <div className='h-auto w-full'>
                     <div className='h-[70px] w-full relative'>
