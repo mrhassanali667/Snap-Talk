@@ -42,7 +42,7 @@ const Login = () => {
         },
     })
 
-    const onSubmit = async ({usernameOrEmail, password }) => {
+    const onSubmit = async ({ usernameOrEmail, password }) => {
         try {
             setErrorMessage("");
             setIsSubmitting(true);
@@ -159,14 +159,14 @@ const Login = () => {
                                 </span>
                                 <input
                                     id="password"
-                                    className={`h-full w-[90%] outline-none px-3 border-[1px]  placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.usernameOrEmail ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px]  placeholder:text-zinc-400 bg-transparent transition-colors duration-200 z-1 ${errors.usernameOrEmail ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
                                     type={isShowPass ? "text" : "password"}
                                     placeholder='Enter your password'
                                     {...register("password")}
                                     aria-describedby="password-error"
                                 />
                                 {isShowPass ?
-                                    <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
+                                    <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer rounded-md '>
                                         <svg
                                             className="w-5 h-5 text-gray-400"
                                             aria-hidden="true"
@@ -188,7 +188,7 @@ const Login = () => {
 
                                     </button>
                                     :
-                                    <button onClick={passVisiblity} className='h-[25px] w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
+                                    <button onClick={passVisiblity} className='h-full w-[40px] bg-white flex justify-center items-center absolute right-0 cursor-pointer'>
                                         <svg
                                             className="w-5 h-5 text-gray-400 "
                                             aria-hidden="true"

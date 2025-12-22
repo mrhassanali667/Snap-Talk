@@ -40,12 +40,11 @@ const Register = () => {
         formState: { errors, isSubmitSuccessful },
     } = useForm({
         resolver: yupResolver(formSchema),
-        mode: 'onChange'
     });
 
     const mutation = useMutation({
         mutationFn: (user) => {
-            return axios.post('https://snap-talk-backend-server.vercel.app/api/auth/register', { ...user },{withCredentials:true})
+            return axios.post('https://snap-talk-backend-server.vercel.app/api/auth/register', { ...user }, { withCredentials: true })
         },
     })
 
@@ -57,7 +56,7 @@ const Register = () => {
         queryKey: ["username", debouncedUsername],
         queryFn: async () => {
             console.log(debouncedUsername)
-            const res = await axios.get(`https://snap-talk-backend-server.vercel.app/api/users/check-username?username=${debouncedUsername}`,{withCredentials:true});
+            const res = await axios.get(`https://snap-talk-backend-server.vercel.app/api/users/check-username?username=${debouncedUsername}`, { withCredentials: true });
             return !res?.data?.data?.available;
         },
         // only run when username is long enough (>=6)
@@ -242,14 +241,14 @@ const Register = () => {
                                 </span>
                                 <input
                                     id="password"
-                                    className={`h-full w-[90%] outline-none border-[1px] px-3 placeholder:text-zinc-400 bg-transparent  border-gray-300  transition-colors duration-200 ${errors.username ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    className={`h-full w-[90%] outline-none border-[1px] px-3 placeholder:text-zinc-400 bg-transparent  border-gray-300  transition-colors duration-200 z-1 ${errors.username ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
                                     type={isShowPass ? "text" : "password"}
                                     placeholder='Enter your password'
                                     {...register("password")}
                                     aria-describedby="password-error"
                                 />
                                 {isShowPass ?
-                                    <button onClick={passVisiblity} className='h-full w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
+                                    <button onClick={passVisiblity} className='h-[20px] w-[30px]  bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
                                         <svg
                                             className="w-5 h-5 text-gray-400"
                                             aria-hidden="true"
@@ -271,7 +270,7 @@ const Register = () => {
 
                                     </button>
                                     :
-                                    <button onClick={passVisiblity} className='h-full w-[30px] bg-white flex justify-center items-center absolute right-2 top-2 cursor-pointer'>
+                                    <button onClick={passVisiblity} className='h-full w-[40px] bg-white flex justify-center items-center absolute right-0 cursor-pointer'>
                                         <svg
                                             className="w-5 h-5 text-gray-400 "
                                             aria-hidden="true"

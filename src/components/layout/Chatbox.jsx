@@ -91,9 +91,9 @@ const Chatbox = () => {
             </svg>
           </span>
           <span>
-            <button className='h-full bg-blue-500 hover:bg-blue-600 text-white font-semibold px-3 py-2 rounded-lg'>
+            <button className='h-10 w-10 flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white font-semibold px-3 py-2 rounded-full'>
               <svg
-                className="w-6 h-6 text-white"
+                className="w-10 h-10 text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width={24}
@@ -107,7 +107,6 @@ const Chatbox = () => {
                   clipRule="evenodd"
                 />
               </svg>
-
             </button>
           </span>
         </div>
