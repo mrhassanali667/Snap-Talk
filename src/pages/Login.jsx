@@ -32,8 +32,7 @@ const Login = () => {
         watch,
         formState: { errors, isSubmitSuccessful },
     } = useForm({
-        resolver: yupResolver(formSchema),
-        mode: 'onChange',
+        resolver: yupResolver(formSchema)
     });
 
     const mutation = useMutation({

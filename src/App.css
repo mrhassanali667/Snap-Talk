@@ -3,31 +3,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 body {
-    @apply bg-slate-100 dark:bg-slate-900/95 transition-colors duration-300;
+  @apply bg-slate-100 dark:bg-slate-900/95 transition-colors duration-300;
 }
 
 .x-scroll::-webkit-scrollbar {
-    @apply h-[0px];
+  @apply h-[0px];
 }
 
 .hide-scroll::-webkit-scrollbar {
-    @apply w-[0px] h-[0px];
+  @apply w-[0px] h-[0px];
 }
 
 .users-list::-webkit-scrollbar {
-    @apply w-[0px] sm:w-[7px]
+  @apply w-[0px] sm:w-[7px]
 }
 
 .users-list::-webkit-scrollbar-track {
-    @apply bg-slate-100 dark:bg-gray-800/95
+  @apply bg-slate-100 dark:bg-gray-800/95
 }
 
 .users-list::-webkit-scrollbar-thumb {
-    @apply bg-slate-300 dark:bg-gray-700/95 rounded-[50px];
+  @apply bg-slate-300 dark:bg-gray-700/95 rounded-[50px];
 }
 
 .users-list::-webkit-scrollbar-thumb:hover {
-    @apply bg-slate-400/65;
+  @apply bg-slate-400/65;
 }
 
 .loader {
@@ -46,54 +46,76 @@ body {
 @keyframes mltShdSpin {
   0% {
     box-shadow: 0 -0.83em 0 -0.4em,
-    0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
-    0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+      0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
+      0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
   }
+
   5%,
   95% {
-    box-shadow: 0 -0.83em 0 -0.4em, 
-    0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 
-    0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    box-shadow: 0 -0.83em 0 -0.4em,
+      0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em,
+      0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
   }
+
   10%,
   59% {
-    box-shadow: 0 -0.83em 0 -0.4em, 
-    -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, 
-    -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
+    box-shadow: 0 -0.83em 0 -0.4em,
+      -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em,
+      -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
   }
+
   20% {
     box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em,
-     -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, 
-     -0.749em -0.34em 0 -0.477em;
+      -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em,
+      -0.749em -0.34em 0 -0.477em;
   }
+
   38% {
     box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em,
-     -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, 
-     -0.82em -0.09em 0 -0.477em;
+      -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em,
+      -0.82em -0.09em 0 -0.477em;
   }
+
   100% {
-    box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 
-    0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+    box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em,
+      0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
   }
 }
 
 @keyframes round {
-  0% { transform: rotate(0deg) }
-  100% { transform: rotate(360deg) }
+  0% {
+    transform: rotate(0deg)
+  }
+
+  100% {
+    transform: rotate(360deg)
+  }
 }
- 
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: inherit !important;
+  caret-color: inherit !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+
 
 @layer components {
 
-    .public-sans {
-        font-family: "Public Sans", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 500;
-        font-style: normal;
-    }
+  .public-sans {
+    font-family: "Public Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+  }
 
-    .navlink {
-        @apply h-[60px] max-lg:h-[45px] max-lg:w-[45px] w-[55px] flex justify-center items-center rounded-[10px] hover:bg-slate-300/50 dark:hover:bg-gray-700/50 transition-colors duration-200
-    }
+  .navlink {
+    @apply h-[60px] max-lg:h-[45px] max-lg:w-[45px] w-[55px] flex justify-center items-center rounded-[10px] hover:bg-slate-300/50 dark:hover:bg-gray-700/50 transition-colors duration-200
+  }
 
 }

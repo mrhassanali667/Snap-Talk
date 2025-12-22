@@ -51,7 +51,7 @@ const Chatbox = () => {
       </main>
       <footer className='min-h-[55px] flex justify-end items-center w-full bg-white dark:bg-gray-900 border-t-1  dark:border-gray-700 px-2 '>
         <div className='h-full w-full flex items-center'>
-          <input type="text" placeholder='Type a message...' className='w-full grow h-10 px-3 rounded-lg border-1 border-gray-400 outline-none focus:border-blue-500 bg-slate-200 dark:bg-gray-800 text-zinc-800 dark:text-white' />
+          <input type="text" placeholder='Type a message...' className='w-full grow h-10 px-3 rounded-lg  border-gray-400 outline-none  bg-slate-200 dark:bg-gray-800 text-zinc-800 dark:text-white' />
           <span className='h-full w-[45px] flex justify-center items-center '>
             <svg
               className="w-5 h-5 text-blue-500  cursor-pointer"
@@ -90,28 +90,22 @@ const Chatbox = () => {
               />
             </svg>
           </span>
-          <span>
-            <button className='h-10 w-10 flex justify-center items-center bg-blue-500 hover:bg-blue-600 text-white font-semibold px-3 py-2 rounded-full'>
+
+          <button >
+            <span className='h-9 w-9 flex justify-center items-center text-white font-semibold rounded-full' >
               <svg
-                className="w-10 h-10 text-white"
-                aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                fill="currentColor"
                 viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-6 h-6 text-blue-600 hover:text-blue-500 cursor-pointer"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M10.271 5.575C8.967 4.501 7 5.43 7 7.12v9.762c0 1.69 1.967 2.618 3.271 1.544l5.927-4.881a2 2 0 0 0 0-3.088l-5.927-4.88Z"
-                  clipRule="evenodd"
-                />
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
               </svg>
-            </button>
-          </span>
+            </span>
+          </button>
         </div>
-      </footer>
-    </div>
+      </footer >
+    </div >
   )
 }
 

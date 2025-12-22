@@ -40,7 +40,7 @@ const Register = () => {
         formState: { errors, isSubmitSuccessful },
     } = useForm({
         resolver: yupResolver(formSchema),
-    });
+    }); 
 
     const mutation = useMutation({
         mutationFn: (user) => {
@@ -130,7 +130,7 @@ const Register = () => {
                         {errorMessage}
                     </div>
                 )}
-                <form onSubmit={handleSubmit(onSubmit)} className='h-auto w-full bg-white rounded-lg shadow-sm p-6 box-border'>
+                <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className='h-auto w-full bg-white rounded-lg shadow-sm p-6 box-border'>
                     <div className='flex flex-col gap-4'>
                         <div className='text-zinc-600 flex flex-col gap-2'>
                             <label htmlFor="email" className='text-[0.9em] font-semibold'>Email</label>
@@ -195,6 +195,7 @@ const Register = () => {
                                     type="text"
                                     placeholder='Enter your username'
                                     {...register("username")}
+                                    autoComplete="off"
                                     aria-describedby="username-error"
                                 />
                             </div>
@@ -245,6 +246,7 @@ const Register = () => {
                                     type={isShowPass ? "text" : "password"}
                                     placeholder='Enter your password'
                                     {...register("password")}
+                                    autoComplete='new-password'
                                     aria-describedby="password-error"
                                 />
                                 {isShowPass ?
