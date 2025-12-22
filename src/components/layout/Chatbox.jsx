@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { hideChat } from '../../redux/chatbox/chatBoxSlice'
+import { hideChat } from '../../redux/chatbox/chatBoxSlice.js'
+import ChatBoxNav from '../specific/ChatBoxNav.jsx'
 
 const Chatbox = () => {
 
@@ -11,41 +12,7 @@ const Chatbox = () => {
 
   return (
     <div className='h-full w-full flex flex-col max-lg:h-[100dvh] max-lg:w-screen bg-white dark:bg-gray-900 text-white max-lg:absolute'>
-      <nav className='min-h-[75px] flex justify-between bg-white dark:bg-gray-900 border-b-1 border-gray-700'>
-        <div className='h-full px-2 flex items-center'>
-          <div className={`h-10 w-10 flex justify-center items-center bg-gray-600 rounded-[50%] border-1`}>
-            {true ?
-              <img src="/images/DP.jpg" alt=""
-                className='h-10 w-10 rounded-[50%]'
-              />
-              :
-              <h2 className={`text-white text-[1.3em] font-semibold`}>{user?.username[0].toUpperCase()}</h2>
-            }
-          </div>
-          <h2 className='ml-2 text-white font-semibold'>{user?.username}</h2>
-        </div>
-        <div className='h-full px-2 items-center'>
-          <span>
-            <svg
-              className="w-6 h-6 text-gray-800 dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width={24}
-              height={24}
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth={2}
-                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-              />
-            </svg>
-
-          </span>
-        </div>
-      </nav>
+      <ChatBoxNav />
       <main className='flex-grow bg-white dark:bg-gray-900 overflow-y-auto'>
 
       </main>
