@@ -1,33 +1,19 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { hideChat } from '../../redux/chatbox/chatBoxSlice.js';
 
 const ChatBoxNav = () => {
 
     const user = useSelector((state) => state.auth.user)
     const innerWidth = window.innerWidth;
+    const dispatch = useDispatch();
 
     return (
         <nav className='min-h-[75px] flex justify-between bg-white dark:bg-gray-900 border-b-1 border-gray-700 '>
             <div className='h-full px-2 flex items-center gap-1'>
-                {innerWidth < 1024 && <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 8-4 4 4 4" />
-                </svg>
-                }
-                <div className={`h-10 w-10 flex justify-center items-center bg-gray-600 rounded-[50%] border-1`}>
-                    {true ?
-                        <img src="/images/DP.jpg" alt=""
-                            className='h-10 w-10 rounded-[50%]'
-                        />
-                        :
-                        <h2 className={`text-white text-[1.3em] font-semibold `}>{user?.username[0].toUpperCase()}</h2>
-                    }
-                </div>
-                <h2 className='ml-2  text-slate-100 font-semibold public-sans'>Rafey Rafeeq</h2>
-            </div>
-            <div className='h-full px-2 flex gap-3 justify-between items-center'>
-                <span>
+                {innerWidth < 1024 && <span onClick={() => dispatch(hideChat())}>
                     <svg
-                        className="w-6 h-6 text-gray-400"
+                        className="w-6 h-6 text-gray-100 dark:text-white"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         width={24}
@@ -38,13 +24,26 @@ const ChatBoxNav = () => {
                         <path
                             stroke="currentColor"
                             strokeLinecap="round"
+                            strokeLinejoin="round"
                             strokeWidth={2}
-                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+                            d="m14 8-4 4 4 4"
                         />
                     </svg>
 
                 </span>
-
+                }
+                <div className={`h-9 w-9 flex justify-center items-center bg-gray-600 rounded-[50%] `}>
+                    {true ?
+                        <img src="/images/DP.jpg" alt=""
+                            className='h-full rounded-full '
+                        />
+                        :
+                        <h2 className={`text-white text-[1.3em] font-semibold `}>{user?.username[0].toUpperCase()}</h2>
+                    }
+                </div>
+                <h2 className='ml-2  text-slate-100 font-semibold public-sans'>Rafey Rafeeq</h2>
+            </div>
+            <div className='h-full px-2 flex gap-2 justify-between items-center'>
                 <span>
                     <svg
                         className="w-6 h-6 text-gray-400"

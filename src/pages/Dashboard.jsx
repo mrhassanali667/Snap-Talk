@@ -8,12 +8,11 @@ import { Outlet } from 'react-router'
 const Dashboard = () => {
 
   const dispatch = useDispatch()
-  const [initialHeight, setInitialHeight] = useState(0)
+  const [currentWidth, setCurrentWidth] = useState(window.innerWidth)
   let isShowChat = useSelector(state => state.chat.isShowChat)
   console.log(isShowChat)
 
   useEffect(() => {
-    setInitialHeight(innerHeight)
     if (innerWidth < 768) {
       dispatch(hideChat())
     } else {
@@ -24,11 +23,16 @@ const Dashboard = () => {
 
 
   window.addEventListener("resize", () => {
-    if (innerWidth < 768 ) {
-      dispatch(hideChat())
-    } else {
-      dispatch(showChat())
+    if (currentWidth !== innerWidth) {
+      if (innerWidth < 768) {
+        dispatch(hideChat())
+      } else {
+        dispatch(showChat())
+      }
     }
+    setTimeout(() => {
+      setCurrentWidth(innerWidth)
+    }, 1000);
   })
 
   return (
