@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     setInitialHeight(innerHeight)
-    if (innerWidth < 1024) {
+    if (innerWidth < 768) {
       dispatch(hideChat())
     } else {
       dispatch(showChat())
@@ -24,7 +24,7 @@ const Dashboard = () => {
 
 
   window.addEventListener("resize", () => {
-    if (innerWidth < 1024 ) {
+    if (innerWidth < 768 ) {
       dispatch(hideChat())
     } else {
       dispatch(showChat())
@@ -33,7 +33,7 @@ const Dashboard = () => {
 
   return (
     <div className='h-full w-full flex justify-center items-center dark:bg-gray-900/95 bg-slate-50 '>
-      <div className='h-full w-full lg:max-w-[460px] flex max-lg:flex-col-reverse'>
+      <div className='h-full w-full md:max-w-[460px] flex max-md:flex-col-reverse'>
         <Navbar />
         <Outlet />
       </div>

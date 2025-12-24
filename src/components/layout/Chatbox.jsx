@@ -11,7 +11,7 @@ const Chatbox = () => {
   const innerWidth = window.innerWidth;
 
   return (
-    <div className='h-full w-full flex flex-col max-lg:h-[100dvh] max-lg:w-screen bg-white dark:bg-gray-900 text-white max-lg:absolute'>
+    <div className='h-full w-full flex flex-col max-md:h-[100dvh] max-md:w-screen bg-white dark:bg-gray-900 text-white max-md:absolute'>
       <ChatBoxNav />
       <main className='flex-grow bg-white dark:bg-gray-900 overflow-y-auto'>
 
@@ -21,7 +21,7 @@ const Chatbox = () => {
           <input type="text" placeholder='Type a message...' className='w-full grow h-10 px-3 rounded-lg  border-gray-400 outline-none  bg-slate-200 dark:bg-gray-800 text-zinc-800 dark:text-white' />
           <span className='h-full w-[45px] flex justify-center items-center '>
             <svg
-              className="w-5 h-5 text-blue-500  cursor-pointer"
+              className="w-5 h-5 text-blue-500 hover:text-blue-600 cursor-pointer"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width={24}
@@ -40,7 +40,7 @@ const Chatbox = () => {
           </span>
           <span className='h-full w-[45px] flex justify-center items-center '>
             <svg
-              className="w-5 h-5 text-blue-500  cursor-pointer"
+              className="w-5 h-5 text-blue-500 hover:text-blue-600 cursor-pointer"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               width={24}
@@ -64,7 +64,7 @@ const Chatbox = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="w-6 h-6 text-blue-600 hover:text-blue-500 cursor-pointer"
+                className="w-6 h-6 text-blue-500 hover:text-blue-600 cursor-pointer"
               >
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
               </svg>

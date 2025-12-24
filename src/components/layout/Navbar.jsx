@@ -9,11 +9,11 @@ const Navbar = () => {
 
   const user = useSelector((state) => state.auth.user)
   const [isDark, setIsDark] = useState(false)
-  const colors = ["bg-slate-700", "bg-gray-700", "bg-zinc-700", "bg-neutral-700", "bg-stone-700", "bg-red-700", "bg-orange-700", "bg-amber-700", "bg-yellow-700", "bg-lime-700", "bg-green-700", "bg-emerald-700", "bg-teal-700", "bg-cyan-700", "bg-sky-700", "bg-blue-700", "bg-indigo-700", "bg-violet-700", "bg-purple-700", "bg-fuchsia-700", "bg-pink-700", "bg-rose-700"];
+  const colors = ["bg-slate-700", "bg-gray-700", "bg-zinc-700", "bg-neutral-700", "bg-stone-700", "bg-red-700", "bg-orange-700", "bg-amber-700", "bg-yellow-700", "bg-lime-700", "bg-green-700", "bg-emerald-700", "bg-teal-700", "bg-cyan-700", "bg-sky-700", "bg-blue-700", "bg-blue-700", "bg-violet-700", "bg-purple-700", "bg-fuchsia-700", "bg-pink-700", "bg-rose-700"];
   const dispatch = useDispatch();
 
   const logout = () => {
-    axios.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true })
+    axios.post('https://snap-talk-backend-server.vercel.app/api/auth/logout', {}, { withCredentials: true })
       .then((response) => {
         console.log('Logout successful:', response.data);
         dispatch(clearUser());
@@ -29,20 +29,20 @@ const Navbar = () => {
   }
 
   return (
-    <div className='max-lg:h-[65px] lg:w-[75px] bg-white dark:bg-gray-800/90 flex lg:flex-col justify-between  items-center py-1 lg:py-4 px-4 max-lg:px-2     '>
-      <div className='max-lg:w-[85%] flex lg:flex-col gap-4 max-lg:justify-between  justify-start items-center'>
-        <NavLink onClick={logout} to={'/'} className='max-lg:hidden' >
+    <div className='max-md:h-[65px] md:w-[75px] bg-white dark:bg-gray-800/90 flex md:flex-col justify-between  items-center py-1 md:py-4 px-4 max-md:px-2     '>
+      <div className='max-md:w-[85%] flex md:flex-col gap-4 max-md:justify-between  justify-start items-center'>
+        <NavLink onClick={logout} to={'/'} className='max-md:hidden' >
           <img src="/images/logo.png" alt="logo"
             className='w-[40px]'
           />
         </NavLink>
-        <nav className='h-auto w-full flex lg:flex-col gap-2 max-lg:gap-1 justify-center max-lg:justify-between items-center'>
+        <nav className='h-auto w-full flex md:flex-col gap-2 max-md:gap-1 justify-center max-md:justify-between items-center'>
           <NavLink to={'/profile'} className={({ isActive }) => `navlink ${isActive ? 'bg-violet-50/70 dark:bg-gray-600/20' : ''}`}>
             {
               ({ isActive }) => (
 
                 <svg
-                  className={`h-7 w-7 lg:w-8 lg:h-8  ${isActive ? 'text-[#7269ef] ' : 'text-zinc-400'}`}
+                  className={`h-7 w-7 md:w-8 md:h-8  ${isActive ? 'text-blue-500 ' : 'text-zinc-400'}`}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}
@@ -64,7 +64,7 @@ const Navbar = () => {
             {
               ({ isActive }) => (
                 <svg
-                  className={`h-7 w-7 lg:w-8 lg:h-8  ${isActive ? 'text-[#7269ef] ' : 'text-zinc-400'} `}
+                  className={`h-7 w-7 md:w-8 md:h-8  ${isActive ? 'text-blue-500 ' : 'text-zinc-400'} `}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}
@@ -88,7 +88,7 @@ const Navbar = () => {
               ({ isActive }) => (
 
                 <svg
-                  className={`h-7 w-7 lg:w-8 lg:h-8  ${isActive ? 'text-[#7269ef] ' : 'text-zinc-400'} `}
+                  className={`h-7 w-7 md:w-8 md:h-8  ${isActive ? 'text-blue-500 ' : 'text-zinc-400'} `}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}
@@ -111,7 +111,7 @@ const Navbar = () => {
               ({ isActive }) => (
 
                 <svg
-                  className={`h-7 w-7 lg:w-8 lg:h-8  ${isActive ? 'text-[#7269ef] ' : 'text-zinc-400'}`}
+                  className={`h-7 w-7 md:w-8 md:h-8  ${isActive ? 'text-blue-500 ' : 'text-zinc-400'}`}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}
@@ -134,7 +134,7 @@ const Navbar = () => {
               ({ isActive }) => (
 
                 <svg
-                  className={`h-7 w-7 lg:w-8 lg:h-8  ${isActive ? 'text-[#7269ef] ' : 'text-zinc-400'}`}
+                  className={`h-7 w-7 md:w-8 md:h-8  ${isActive ? 'text-blue-500 ' : 'text-zinc-400'}`}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   width={24}
@@ -163,10 +163,10 @@ const Navbar = () => {
           </NavLink>
         </nav>
       </div>
-      <div className='flex lg:flex-col gap-8 justify-center items-center '>
+      <div className='flex md:flex-col gap-8 justify-center items-center '>
         <button
           onClick={toggleTheme}
-          className='cursor-pointer max-lg:hidden'>
+          className='cursor-pointer max-md:hidden'>
           {isDark ?
             <svg
               className="w-8 h-8 text-zinc-400 "

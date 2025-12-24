@@ -4,10 +4,15 @@ import { useSelector } from 'react-redux'
 const ChatBoxNav = () => {
 
     const user = useSelector((state) => state.auth.user)
+    const innerWidth = window.innerWidth;
 
     return (
         <nav className='min-h-[75px] flex justify-between bg-white dark:bg-gray-900 border-b-1 border-gray-700 '>
-            <div className='h-full px-5 flex items-center gap-1'>
+            <div className='h-full px-2 flex items-center gap-1'>
+                {innerWidth < 1024 && <svg class="w-6 h-6 text-gray-100 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14 8-4 4 4 4" />
+                </svg>
+                }
                 <div className={`h-10 w-10 flex justify-center items-center bg-gray-600 rounded-[50%] border-1`}>
                     {true ?
                         <img src="/images/DP.jpg" alt=""

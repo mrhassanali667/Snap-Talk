@@ -121,7 +121,7 @@ const Login = () => {
                                 </span>
                                 <input
                                     id="email"
-                                    className={`h-full w-[90%] outline-none px-3 border-[1px] placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.usernameOrEmail ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px] placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.usernameOrEmail ? 'border-red-300' : 'border-gray-300 focus-within:border-blue-500'}`}
                                     type="text"
                                     placeholder='Enter your username or email'
                                     {...register("usernameOrEmail")}
@@ -158,7 +158,7 @@ const Login = () => {
                                 </span>
                                 <input
                                     id="password"
-                                    className={`h-full w-[90%] outline-none px-3 border-[1px]  placeholder:text-zinc-400 bg-transparent transition-colors duration-200 z-1 ${errors.usernameOrEmail ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px]  placeholder:text-zinc-400 bg-transparent transition-colors duration-200 z-1 ${errors.usernameOrEmail ? 'border-red-300' : 'border-gray-300 focus-within:border-blue-500'}`}
                                     type={isShowPass ? "text" : "password"}
                                     placeholder='Enter your password'
                                     {...register("password")}
@@ -218,7 +218,7 @@ const Login = () => {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`h-[40px] flex justify-center items-center ${isSubmitting ? 'bg-indigo-500' : 'bg-indigo-600 hover:bg-indigo-700'
+                            className={`h-[40px] flex justify-center items-center ${isSubmitting ? 'bg-blue-400' : 'bg-blue-500 hover:bg-blue-600'
                                 } text-white font-semibold rounded-md mt-[10px] transition-colors duration-200 ${isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'
                                 }`}
                             aria-busy={isSubmitting}
@@ -226,14 +226,14 @@ const Login = () => {
                             {isSubmitting ? <MiniLoader /> : 'Sign in'}
                         </button>
                         <div className="flex justify-end">
-                            <button type="button" className="text-sm text-indigo-600 hover:text-indigo-700">
+                            <button type="button" className="text-sm text-blue-600 hover:text-blue-700">
                                 Forgot password?
                             </button>
                         </div>
                     </div>
                 </form>
                 <div className='h-[150px] w-full flex flex-col gap-2 justify-center items-center text-neutral-600'>
-                    <p className='text-[0.9em]'>Don't have an account ? <Link to={'/register'} className='text-indigo-600'>Signup now</Link></p>
+                    <p className='text-[0.9em]'>Don't have an account ? <Link to={'/register'} className='text-blue-600'>Signup now</Link></p>
                     <p className='text-[0.9em]'>© {new Date().getFullYear()} Snap Talk. Crafted with <span className='text-red-600 text-[1.5em]'>&hearts;</span> by Hassan Ali</p>
                 </div>
             </div>

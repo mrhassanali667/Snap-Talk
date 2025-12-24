@@ -156,7 +156,7 @@ const Register = () => {
                                 </span>
                                 <input
                                     id="email"
-                                    className={`h-full w-[90%] outline-none px-3 border-[1px] transition-colors duration-200 placeholder:text-zinc-400 bg-transparent ${errors.email ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px] transition-colors duration-200 placeholder:text-zinc-400 bg-transparent ${errors.email ? 'border-red-300' : 'border-gray-300 focus-within:border-blue-500'}`}
                                     type="email"
                                     placeholder='Enter your email'
                                     {...register("email")}
@@ -191,7 +191,7 @@ const Register = () => {
                                 </span>
                                 <input
                                     id="username"
-                                    className={`h-full w-[90%] outline-none px-3 border-[1px] border-gray-300 placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.username ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    className={`h-full w-[90%] outline-none px-3 border-[1px] border-gray-300 placeholder:text-zinc-400 bg-transparent transition-colors duration-200 ${errors.username ? 'border-red-300' : 'border-gray-300 focus-within:border-blue-500'}`}
                                     type="text"
                                     placeholder='Enter your username'
                                     {...register("username")}
@@ -205,7 +205,7 @@ const Register = () => {
                             {/* Username availability */}
                             {debouncedUsername.length >= 6 && usernameLoading && (
                                 <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
-                                    <div className="w-4 h-4 border-2 border-gray-300 border-t-indigo-500 rounded-full animate-spin" />
+                                    <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
                                     Checking availability...
                                 </div>
                             )}
@@ -242,7 +242,7 @@ const Register = () => {
                                 </span>
                                 <input
                                     id="password"
-                                    className={`h-full w-[90%] outline-none border-[1px] px-3 placeholder:text-zinc-400 bg-transparent  border-gray-300  transition-colors duration-200 z-1 ${errors.username ? 'border-red-300' : 'border-gray-300 focus-within:border-indigo-500'}`}
+                                    className={`h-full w-[90%] outline-none border-[1px] px-3 placeholder:text-zinc-400 bg-transparent  border-gray-300  transition-colors duration-200 z-1 ${errors.username ? 'border-red-300' : 'border-gray-300 focus-within:border-blue-500'}`}
                                     type={isShowPass ? "text" : "password"}
                                     placeholder='Enter your password'
                                     {...register("password")}
@@ -304,7 +304,7 @@ const Register = () => {
                         <button
                             type="submit"
                             disabled={isSubmitting || usernameTaken}
-                            className={`h-[40px] flex justify-center items-center ${isSubmitting || usernameTaken ? 'bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-700'
+                            className={`h-[40px] flex justify-center items-center ${isSubmitting || usernameTaken ? 'bg-blue-400' : 'bg-blue-500 hover:bg-blue-600'
                                 } text-white font-semibold rounded-md mt-[10px] transition-colors duration-200 ${isSubmitting || usernameTaken ? 'cursor-not-allowed' : 'cursor-pointer'
                                 }`}
                             aria-busy={isSubmitting}
@@ -316,7 +316,7 @@ const Register = () => {
                 </form>
 
                 <div className='h-[150px] w-full flex flex-col gap-2 justify-center items-center text-neutral-600'>
-                    <p className='text-[0.9em]'>Don't have an account ? <Link to={'/login'} className='text-indigo-600'>Signin</Link></p>
+                    <p className='text-[0.9em]'>Don't have an account ? <Link to={'/login'} className='text-blue-600'>Signin</Link></p>
                     <p className='text-[0.9em]'>© {new Date().getFullYear()} Snap Talk. Crafted with  <span className='text-red-600 text-[1.5em]'>&hearts;</span> by Hassan Ali</p>
                 </div>
             </div>

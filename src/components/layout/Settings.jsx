@@ -5,9 +5,9 @@ import SearchBar from '../common/SearchBar'
 const Settings = () => {
   return (
     <div className='h-full w-full bg-slate-50 dark:bg-gray-800/50 py-5'>
-      <div className='flex flex-col gap-1 lg:gap-3'>
+      <div className='flex flex-col gap-1'>
         <Heading name={'Settings'} />
-        <div className='py-2 px-7'>
+        <div className='py-2 px-4'>
           <SearchBar />
         </div>
       </div>
