@@ -23,13 +23,14 @@ const Dashboard = () => {
 
 
   window.addEventListener("resize", () => {
-    if (currentWidth !== innerWidth) {
+    if (currentWidth > innerWidth || currentWidth < innerWidth) {
       if (innerWidth < 768) {
         dispatch(hideChat())
       } else {
-        setCurrentWidth(innerWidth)
         dispatch(showChat())
       }
+    } else {
+      setCurrentWidth(innerWidth)
     }
   })
 
