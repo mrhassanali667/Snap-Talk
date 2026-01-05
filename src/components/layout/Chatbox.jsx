@@ -13,7 +13,43 @@ const Chatbox = () => {
   return (
     <div className='h-full w-full flex flex-col max-md:h-[100dvh] max-md:w-screen bg-white dark:bg-gray-900 text-white max-md:absolute'>
       <ChatBoxNav />
-      <main className='flex-grow bg-white dark:bg-gray-900 overflow-y-auto'>
+      <main className='flex-grow flex flex-col gap-3 bg-white dark:bg-gray-900 overflow-y-auto pt-2 px-2'>
+        {
+          [...Array(20)].map((_, index) => (
+            <>
+              <div class="flex gap-4">
+                <div class="max-md:hidden h-12 w-12 flex-shrink-0 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 dark:from-emerald-400 dark:to-teal-400 flex items-center justify-center text-white font-semibold text-sm shadow-lg">
+                  AR
+                </div>
+                <div class="max-w-[75%] space-y-1">
+                  <div class="flex items-center gap-2 text-xs">
+                    <span class="font-medium text-slate-900 dark:text-slate-200">Asad Raza</span>
+                    <span class="text-slate-500 dark:text-slate-400 ml-auto">7:11 PM</span>
+                  </div>
+                  <div class="p-4 bg-slate-200 dark:bg-slate-800 rounded-2xl rounded-tr-sm text-sm text-slate-900 dark:text-slate-100 shadow-sm">
+                    <p>Hey Rafay! Available hun meeting ke liye.</p>
+                    <div class="flex items-center gap-1 mt-2 text-xs text-slate-500 dark:text-slate-400">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-end justify-end gap-4">
+                <div class="max-w-[75%] p-4 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 text-white rounded-2xl rounded-tl-sm shadow-lg">
+                  <p>Great! 8 PM pe milte hain Zoom pe.</p>
+                  <div class="flex items-center justify-end mt-2 text-xs opacity-90">
+                    <span>✓✓</span>
+                    <span class="ml-1">7:12 PM</span>
+                  </div>
+                </div>
+                <div class="max-md:hidden h-12 w-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-semibold text-sm shadow-lg">
+                  RF
+                </div>
+              </div>
+            </>
+          ))
+        }
+
 
       </main>
       <footer className='min-h-[55px] flex justify-end items-center w-full bg-white dark:bg-gray-900 border-t-1  dark:border-gray-700 px-2 '>
@@ -57,7 +93,6 @@ const Chatbox = () => {
               />
             </svg>
           </span>
-
           <button >
             <span className='h-9 w-9 flex justify-center items-center text-white font-semibold rounded-full' >
               <svg

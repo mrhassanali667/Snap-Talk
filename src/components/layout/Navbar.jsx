@@ -33,7 +33,7 @@ const Navbar = () => {
       <div className='max-md:w-[85%] flex md:flex-col gap-4 max-md:justify-between  justify-start items-center'>
         <NavLink onClick={logout} to={'/'} className='max-md:hidden' >
           <img src="/images/logo.png" alt="logo"
-            className='w-[40px]'
+            className='w-[35px]'
           />
         </NavLink>
         <nav className='h-auto w-full flex md:flex-col gap-2 max-md:gap-1 justify-center max-md:justify-between items-center'>

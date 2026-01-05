@@ -27,16 +27,14 @@ const Dashboard = () => {
       if (innerWidth < 768) {
         dispatch(hideChat())
       } else {
+        setCurrentWidth(innerWidth)
         dispatch(showChat())
       }
     }
-    setTimeout(() => {
-      setCurrentWidth(innerWidth)
-    }, 1000);
   })
 
   return (
-    <div className='h-full w-full flex justify-center items-center dark:bg-gray-900/95 bg-slate-50 '>
+    <div className='h-full w-full flex justify-center items-center dark:bg-gray-900/95 bg-slate-50 transition-colors duration-300'>
       <div className='h-full w-full md:max-w-[460px] flex max-md:flex-col-reverse'>
         <Navbar />
         <Outlet />
