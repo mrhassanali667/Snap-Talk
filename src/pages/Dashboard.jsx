@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   const dispatch = useDispatch()
   const [currentWidth, setCurrentWidth] = useState(window.innerWidth)
-  let isShowChat = useSelector(state => state.chat.isShowChat)
+  let isShowChat = useSelector(state => state.chatBox.isShowChat)
   console.log(isShowChat)
 
   useEffect(() => {

@@ -13,37 +13,36 @@ const Chatbox = () => {
   return (
     <div className='h-full w-full flex flex-col max-md:h-[100dvh] max-md:w-screen bg-white dark:bg-gray-900 text-white max-md:absolute'>
       <ChatBoxNav />
-      <main className='flex-grow flex flex-col gap-3 bg-white dark:bg-gray-900 overflow-y-auto pt-2 px-2'>
+      <main className='w-full grow flex justify-between flex-col gap-3 bg-white dark:bg-gray-900 overflow-y-auto pt-2 chat-scroll'>
         {
           [...Array(20)].map((_, index) => (
             <>
-              <div class="flex gap-4">
-                <div class="max-md:hidden h-12 w-12 flex-shrink-0 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 dark:from-emerald-400 dark:to-teal-400 flex items-center justify-center text-white font-semibold text-sm shadow-lg">
-                  AR
-                </div>
-                <div class="max-w-[75%] space-y-1">
-                  <div class="flex items-center gap-2 text-xs">
-                    <span class="font-medium text-slate-900 dark:text-slate-200">Asad Raza</span>
-                    <span class="text-slate-500 dark:text-slate-400 ml-auto">7:11 PM</span>
+              <div className="w-full flex items-start gap-4 p-2 mg:p-4">
+                <div className="max-md:hidden h-11 w-11 rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 flex-shrink-0 flex items-center justify-center font-bold text-sm text-white shadow-lg">RA</div>
+                <div className="flex flex-col space-y-1.5 max-w-[80%]">
+                  <div className="flex items-center gap-2 text-xs text-slate-400">
+                    <span className="font-medium text-slate-200">Rafay Ahmed</span>
+                    <span className="ml-auto">7:18 PM</span>
                   </div>
-                  <div class="p-4 bg-slate-200 dark:bg-slate-800 rounded-2xl rounded-tr-sm text-sm text-slate-900 dark:text-slate-100 shadow-sm">
-                    <p>Hey Rafay! Available hun meeting ke liye.</p>
-                    <div class="flex items-center gap-1 mt-2 text-xs text-slate-500 dark:text-slate-400">
-                    </div>
+                  <div className="p-4 backdrop-blur-sm bg-slate-800/60 border border-slate-700/50 rounded-2xl rounded-tr-sm shadow-xl text-slate-100">
+                    <p className="leading-relaxed">Hey! Available hun meeting discussion ke liye. Kya time theek rahega?</p>
                   </div>
                 </div>
               </div>
 
-              <div class="flex items-end justify-end gap-4">
-                <div class="max-w-[75%] p-4 bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 text-white rounded-2xl rounded-tl-sm shadow-lg">
-                  <p>Great! 8 PM pe milte hain Zoom pe.</p>
-                  <div class="flex items-center justify-end mt-2 text-xs opacity-90">
-                    <span>✓✓</span>
-                    <span class="ml-1">7:12 PM</span>
+              <div className="w-full flex items-end justify-end gap-4 p-2 md:p-4">
+                <div className="flex flex-col space-y-1.5 items-end max-w-[80%]">
+                  <div className="flex items-center gap-2 text-xs text-slate-400">
+                    <span>You</span>
+                    <span>7:20 PM</span>
                   </div>
-                </div>
-                <div class="max-md:hidden h-12 w-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 flex items-center justify-center text-white font-semibold text-sm shadow-lg">
-                  RF
+                  <div className="px-3 py-1 md:p-4 bg-gradient-to-r from-blue-800 to-blue-900 backdrop-blur-sm rounded-2xl rounded-tl-sm shadow-xl border border-blue-400/50  transition-all text-white group">
+                    <p className="leading-relaxed">Perfect! 8 PM Zoom pe chalega. Link bhej raha hun.</p>
+                    <div className="flex items-center gap-2 mt-1 text-xs text-blue-50 font-medium">
+                      <span className="text-sm">✓✓</span>
+                      <span>Sent</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </>

@@ -15,9 +15,6 @@ const Users = () => {
             <SearchBar />
           </div>
         </div>
-        <div>
-          <h2 className='px-5 pt-[4px] pb-1 text-[1em] font-semibold font-manrope  dark:text-slate-100 text-zinc-700'>Recent</h2>
-        </div>
       </header>
       <div className='w-full overflow-y-auto h-auto grow '>
         <UsersList />

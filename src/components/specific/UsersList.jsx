@@ -1,6 +1,10 @@
 import React, { use, useDebugValue, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { showChat } from '../../redux/chatbox/chatBoxSlice';
+import { showChat } from '../../redux/chatbox/chatBoxSlice.js';
+import { setSelectedUser } from '../../redux/chat/chatSlice.js';
+import { useQuery } from '@tanstack/react-query';
+
+import axios from 'axios';
 
 const UsersList = () => {
 
@@ -12,6 +16,19 @@ const UsersList = () => {
     setTimeout(() => {
       setShowScrollBar(false)
     }, 2000);
+  }
+
+  const { data: users, isLoading, isError, error } = useQuery({
+    queryKey: ['users'],
+    queryFn: async () => await axios.get('http://localhost:3000/api/users').then(res => res.data.data),
+  })
+
+  console.log(users);
+
+
+  const openChat = (e) => {
+    dispatch(showChat());
+    dispatch(setSelectedUser(e));
   }
 
   ["Hassan", "Usama", "Sufiyan", "Huzaifa", "Ali", "Murtaza", "Zohan"]
@@ -32,30 +49,37 @@ const UsersList = () => {
   ]
 
   return (
-    <div onScroll={handelScrollBar} className={`h-full w-full flex gap-1 flex-col overflow-y-auto hide-scroll ${showScrollBar ? 'users-list' : ''}`}>
-      {arr.map((user, index) =>
-        <div onClick={() => dispatch(showChat())} key={index} className='px-3 py-2 min-h-[70px] w-full flex items-center hover:bg-slate-200/50 dark:hover:bg-gray-700/50 active:bg-slate-200/50 dark:active:bg-gray-700/50  cursor-pointer '>
-          <div className='h-full w-[55px] flex justify-center items-center'>
-            <div className='flex justify-center items-center'>
-              {true ?
-                <img
-                  src="/images/DP.jpg" alt=""
-                  className='h-[45px] w-[45px] rounded-full bg-slate-300 dark:bg-gray-800 '
-                />
-                :
-                <div className='h-[45px] w-[45px] rounded-full bg-slate-300 dark:bg-gray-800 '></div>
-              }
+    <div onScroll={handelScrollBar} className={`h-full w-full flex flex-col overflow-y-auto hide-scroll ${showScrollBar ? 'users-list' : ''}`}>
+      <div>
+        <h2 className='px-5 pt-[4px] pb-1 text-[1em] font-semibold font-manrope  dark:text-slate-100 text-zinc-700'>Recent</h2>
+      </div>
+      {
+        users?.map((user, index) => (
+          <div onClick={() => openChat(user)} key={index} className='px-3 py-2 min-h-[70px] w-full flex items-center hover:bg-slate-200/50 dark:hover:bg-gray-700/50 active:bg-slate-200/50 dark:active:bg-gray-700/50  cursor-pointer '>
+            <div className='h-full w-[55px] flex justify-center items-center'>
+              <div className='flex justify-center items-center'>
+                {true ?
+                  <img
+                    src="/images/DP.jpg" alt=""
+                    className='h-[45px] w-[45px] rounded-full bg-slate-300 dark:bg-gray-800 '
+                  />
+                  :
+                  <div className='h-[45px] w-[45px] rounded-full bg-slate-300 dark:bg-gray-800 '></div>
+                }
+              </div>
+            </div>
+            <div className='h-full w-auto grow flex flex-col px-2 py-1'>
+              <h3 className=' dark:text-slate-100 text-zinc-700 font-semibold'>{user?.fullName} </h3>
+              <p className='text-[0.9em] dark:text-slate-400  text-zinc-500 font-semibold truncate'>{user?.about}</p>
+            </div>
+            <div className='h-full w-[50px]'>
+
             </div>
           </div>
-          <div className='h-full w-auto grow flex flex-col px-2 py-1'>
-            <h3 className=' dark:text-slate-100 text-zinc-700 font-semibold'>{user.name} </h3>
-            <p className='text-[0.9em] dark:text-slate-400  text-zinc-500 font-semibold truncate'>{user.lastMessage}</p>
-          </div>
-          <div className='h-full w-[50px]'>
 
-          </div>
-        </div>
-      )}
+        )
+        )
+      }
     </div>
   )
 }
