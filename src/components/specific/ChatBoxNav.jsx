@@ -4,13 +4,13 @@ import { hideChat } from '../../redux/chatbox/chatBoxSlice.js';
 
 const ChatBoxNav = () => {
 
-    const user = useSelector((state) => state.auth.user)
     const innerWidth = window.innerWidth;
     const dispatch = useDispatch();
+    const user = useSelector(state => state.chat.selectedUser)
 
     return (
-        <nav className='min-h-[75px] flex justify-between bg-white dark:bg-gray-900 border-b-1 border-gray-700 relative top-0'>
-            <div className='h-full px-2 flex items-center gap-1'>
+        <nav className='min-h-[75px] flex justify-between bg-white dark:bg-gray-900 border-b-1 border-gray-700 sticky top-0'>
+            <div className='h-full md:px-4 flex items-center gap-1'>
                 {innerWidth < 768 && <span onClick={() => dispatch(hideChat())}>
                     <svg
                         className="w-7 h-7 text-gray-400 "
@@ -33,15 +33,15 @@ const ChatBoxNav = () => {
                 </span>
                 }
                 <div className={`h-10 w-10 flex justify-center items-center bg-gray-600 rounded-[50%] `}>
-                    {true ?
-                        <img src="/images/DP.jpg" alt=""
+                    {user?.profilePicture ?
+                        <img src={user?.profilePicture} alt=""
                             className='h-full rounded-full '
                         />
                         :
-                        <h2 className={`text-white text-[1.3em] font-semibold `}>{user?.username[0].toUpperCase()}</h2>
+                        <h2 className={`text-white text-[1.3em] font-semibold `}>{user?.fullName[0].toUpperCase()}</h2>
                     }
                 </div>
-                <h2 className='ml-2 text-[1.1em] text-zinc-700 font-semibold dark:text-slate-100 public-sans'>Rafey Rafeeq</h2>
+                <h2 className='ml-2 text text-zinc-700 font-semibold dark:text-slate-100 public-sans'>{user?.fullName}</h2>
             </div>
             <div className='h-full px-2 flex gap-2 justify-between items-center'>
                 <span>
@@ -90,7 +90,7 @@ const ChatBoxNav = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         width={24}
                         height={24}
-                        fill="none" 
+                        fill="none"
                         viewBox="0 0 24 24"
                     >
                         <path

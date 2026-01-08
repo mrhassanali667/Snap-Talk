@@ -1,3 +1,5 @@
+
+
 function getRandomDarkColors(count) {
     const colors = [];
     for (let i = 0; i < count; i++) {
@@ -11,6 +13,11 @@ function getRandomDarkColors(count) {
     return colors;
 }
 
+const ENV = import.meta.env || process.env || null;
+
+export default ENV;
+
 export {
-    getRandomDarkColors
+    getRandomDarkColors,
+    ENV
 }

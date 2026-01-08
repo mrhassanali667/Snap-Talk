@@ -125,7 +125,37 @@ select:-webkit-autofill {
 
 
 
+
 @layer components {
+
+  /* Custom CSS for Bottom Tail (Exact as Screenshot) */
+  .bubble-tail-left::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    /* Tail ko niche nikalne ke liye */
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 0 solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 10px solid #635BFF;
+    /* Left bubble color */
+  }
+
+  .bubble-tail-right::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    /* Tail ko niche nikalne ke liye */
+    right: 0;
+    width: 0;
+    height: 0;
+    border-right: 0 solid transparent;
+    border-left: 12px solid transparent;
+    border-top: 10px solid #323B47;
+    /* Right bubble color */
+  }
 
   .public-sans {
     font-family: "Public Sans", sans-serif;

@@ -2,16 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { auth, db } from './firebase/firebaseConfig.js';
-import { onAuthStateChanged } from "firebase/auth";
 import { setUser, clearUser } from './redux/auth/authSlice';
 import Login from './pages/Login';
 import Rejister from './pages/Rejister';
 import Dashboard from './pages/Dashboard';
 import CreateProfile from './pages/CreateProfile';
 import NotFound from './pages/NotFound';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { checkIsProfileComplete, setCurrentUserID, setIsProfileLoading } from './redux/Profile/profileSlice.js';
+import { setCurrentUserID, setIsProfileLoading } from './redux/Profile/profileSlice.js';
 import { useQuery } from '@tanstack/react-query';
 import Users from './components/layout/Users.jsx';
 import Contacts from './components/layout/Contacts.jsx';
@@ -19,7 +16,7 @@ import Settings from './components/layout/Settings.jsx';
 import Profile from './components/layout/Profile.jsx';
 import Groups from './components/layout/Groups.jsx';
 import axios from 'axios';
-
+import ENV from './utils/index.js';
 
 
 function App() {
@@ -29,11 +26,13 @@ function App() {
   const { data: userData, error: userError, isLoading, } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      const res = await axios.get(`https://snap-talk-backend-server.vercel.app/api/auth/user`, { withCredentials: true });
+      const res = await axios.get(`${ENV.VITE_BASE_URL}/auth/user`, { withCredentials: true });
       return res.data.user;
     },
     retry: 0,
   });
+
+  console.log("ENV VARIABLE:", ENV.VITE_BASE_URL);
 
   useEffect(() => {
     if (userData) {
@@ -51,7 +50,7 @@ function App() {
       <>
         <div className='h-screen w-screen bg-white dark:bg-gray-900 flex justify-center items-center'>
           <div className="loader"></div>
-        </div>  
+        </div>
       </>
     )
   }

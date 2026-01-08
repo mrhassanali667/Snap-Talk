@@ -3,13 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../firebase/firebaseConfig'
 import MiniLoader from '../components/common/MiniLoader'
 import { useDispatch } from 'react-redux'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { setUser } from '../redux/auth/authSlice.js'
+import ENV from '../utils/index.js'
 
 
 
@@ -37,7 +36,7 @@ const Login = () => {
 
     const mutation = useMutation({
         mutationFn: (user) => {
-            return axios.post('https://snap-talk-backend-server.vercel.app/api/auth/login', { ...user }, { withCredentials: true })
+            return axios.post(`${ENV.VITE_BASE_URL}/auth/login`, { ...user }, { withCredentials: true })
         },
     })
 

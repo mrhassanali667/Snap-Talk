@@ -9,40 +9,56 @@ const Chatbox = () => {
   let isShowChat = useSelector(state => state.chat.isShowChat)
   const user = useSelector((state) => state.auth.user)
   const innerWidth = window.innerWidth;
+  const selectedUser = useSelector(state => state.chat.selectedUser)
+  console.log("Selected User", selectedUser);
 
   return (
     <div className='h-full w-full flex flex-col max-md:h-[100dvh] max-md:w-screen bg-white dark:bg-gray-900 text-white max-md:absolute'>
       <ChatBoxNav />
-      <main className='w-full grow flex justify-between flex-col gap-3 bg-white dark:bg-gray-900 overflow-y-auto pt-2 chat-scroll'>
+      <main className='w-full grow flex  flex-col bg-white dark:bg-gray-900 overflow-y-auto pt-2 px-2 chat-scroll'>
         {
-          [...Array(20)].map((_, index) => (
+          [...Array(1)].map((_, index) => (
             <>
-              <div className="w-full flex items-start gap-4 p-2 mg:p-4">
-                <div className="max-md:hidden h-11 w-11 rounded-full bg-gradient-to-br from-emerald-600 to-teal-600 flex-shrink-0 flex items-center justify-center font-bold text-sm text-white shadow-lg">RA</div>
-                <div className="flex flex-col space-y-1.5 max-w-[80%]">
-                  <div className="flex items-center gap-2 text-xs text-slate-400">
-                    <span className="font-medium text-slate-200">Rafay Ahmed</span>
-                    <span className="ml-auto">7:18 PM</span>
+              <div class="flex items-end gap-3 max-w-md">
+                <div class="flex-shrink-0">
+                  <img src="https://i.pravatar.cc/100?u=doris" alt="Doris" class="w-10 h-10 rounded-full border-2 border-transparent" />
+                </div>
+
+                <div class="flex flex-col gap-3">
+                  <div class="flex items-start gap-2">
+                    <div class="bubble-tail-left relative bg-blue-600 text-white px-5 py-3 rounded-2xl rounded-bl-none">
+                      <p class="text-[15px] font-medium leading-relaxed">Lorem ipsum dolor sit amet consectetur </p>
+                      <div class="flex items-center gap-1 mt-1 text-white/70 text-[11px]">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+                        10:00
+                      </div>
+                    </div>
+                    <button class="text-gray-500 mt-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg>
+                    </button>
                   </div>
-                  <div className="p-4 backdrop-blur-sm bg-slate-800/60 border border-slate-700/50 rounded-2xl rounded-tr-sm shadow-xl text-slate-100">
-                    <p className="leading-relaxed">Hey! Available hun meeting discussion ke liye. Kya time theek rahega?</p>
-                  </div>
+                  <span class="text-gray-400 text-xs font-medium ml-1">Doris Brown</span>
                 </div>
               </div>
 
-              <div className="w-full flex items-end justify-end gap-4 p-2 md:p-4">
-                <div className="flex flex-col space-y-1.5 items-end max-w-[80%]">
-                  <div className="flex items-center gap-2 text-xs text-slate-400">
-                    <span>You</span>
-                    <span>7:20 PM</span>
-                  </div>
-                  <div className="px-3 py-1 md:p-4 bg-gradient-to-r from-blue-800 to-blue-900 backdrop-blur-sm rounded-2xl rounded-tl-sm shadow-xl border border-blue-400/50  transition-all text-white group">
-                    <p className="leading-relaxed">Perfect! 8 PM Zoom pe chalega. Link bhej raha hun.</p>
-                    <div className="flex items-center gap-2 mt-1 text-xs text-blue-50 font-medium">
-                      <span className="text-sm">✓✓</span>
-                      <span>Sent</span>
+              <div class="flex items-end justify-end gap-3 w-full">
+                <div class="flex flex-col items-end gap-3 max-w-md">
+                  <div class="flex items-start gap-2">
+                    <button class="text-gray-500 mt-1">
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg>
+                    </button>
+                    <div class="bubble-tail-right relative bg-[#2D3748] text-white px-5 py-3 rounded-2xl rounded-br-none">
+                      <p class="text-[15px] font-medium leading-relaxed">Good morning, How are you? What about ?</p>
+                      <div class="flex items-center gap-1 mt-1 text-white/40 text-[11px]">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+                        10:02
+                      </div>
                     </div>
                   </div>
+                  <span class="text-gray-400 text-xs font-medium mr-1">Patricia Smith</span>
+                </div>
+                <div class="flex-shrink-0">
+                  <img src="https://i.pravatar.cc/100?u=patricia" alt="Patricia" class="w-10 h-10 rounded-full" />
                 </div>
               </div>
             </>

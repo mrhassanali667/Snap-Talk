@@ -3,8 +3,6 @@ import { set, useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from 'yup'
-import { auth, db } from '../firebase/firebaseConfig';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { useQuery, useMutation } from '@tanstack/react-query'
 import MiniLoader from '../components/common/MiniLoader';
 import { useDebounce } from "use-debounce";
@@ -40,11 +38,11 @@ const Register = () => {
         formState: { errors, isSubmitSuccessful },
     } = useForm({
         resolver: yupResolver(formSchema),
-    }); 
+    });
 
     const mutation = useMutation({
         mutationFn: (user) => {
-            return axios.post('https://snap-talk-backend-server.vercel.app/api/auth/register', { ...user }, { withCredentials: true })
+            return axios.post(`${ENV.VITE_BASE_URL}/auth/register`, { ...user }, { withCredentials: true })
         },
     })
 
@@ -56,7 +54,7 @@ const Register = () => {
         queryKey: ["username", debouncedUsername],
         queryFn: async () => {
             console.log(debouncedUsername)
-            const res = await axios.get(`https://snap-talk-backend-server.vercel.app/api/users/check-username?username=${debouncedUsername}`, { withCredentials: true });
+            const res = await axios.get(`${ENV.VITE_BASE_URL}/users/check-username?username=${debouncedUsername}`, { withCredentials: true });
             return !res?.data?.data?.available;
         },
         // only run when username is long enough (>=6)
