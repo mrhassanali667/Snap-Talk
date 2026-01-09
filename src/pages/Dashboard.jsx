@@ -13,7 +13,7 @@ const Dashboard = () => {
   console.log(isShowChat)
 
   useEffect(() => {
-    if (innerWidth < 768) {
+    if (window.innerWidth < 768) {
       dispatch(hideChat())
     } else {
       dispatch(showChat())

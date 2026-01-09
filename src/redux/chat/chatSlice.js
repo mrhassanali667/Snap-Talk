@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     selectedUser: null,
+    messages: []
 }
 
 export const chatSlice = createSlice({
@@ -13,7 +14,11 @@ export const chatSlice = createSlice({
         },
         clearSelectedUser: (state) => {
             state.selectedUser = null;
+        },
+        setMessages: (state,action) => {
+            state.messages = action.payload
         }
+
     },
 })
 
