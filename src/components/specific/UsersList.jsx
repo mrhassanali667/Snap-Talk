@@ -21,7 +21,7 @@ const UsersList = () => {
 
   const { data: users, isLoading, isError, error } = useQuery({
     queryKey: ['users'],
-    queryFn: async () => await axios.get('http://localhost:3000/api/users').then(res => res.data.data),
+    queryFn: async () => await axios.get(`${ENV.VITE_BASE_URL}/users`).then(res => res.data.data),
   })
 
   console.log(users);
