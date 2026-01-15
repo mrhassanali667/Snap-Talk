@@ -25,18 +25,14 @@ const Chatbox = () => {
   return (
     <div className='h-full w-full flex flex-col max-md:h-[100dvh] max-md:w-screen bg-white dark:bg-gray-900 text-white max-md:absolute'>
       <ChatBoxNav />
-      <main className='w-full grow flex  flex-col bg-white dark:bg-gray-900 overflow-y-auto pt-2 px-2 chat-scroll'>
+      <main className='w-full grow flex gap-4 flex-col bg-white dark:bg-gray-900 overflow-y-auto pt-2 px-2 chat-scroll'>
         {
-          [...Array(1)].map((_, index) => (
+          [...Array(4)].map((_, index) => (
             <>
               <div className="flex items-end gap-3 max-w-md" key={index}>
-                <div className="flex-shrink-0">
-                  <img src="https://i.pravatar.cc/100?u=doris" alt="Doris" className="w-10 h-10 rounded-full border-2 border-transparent" />
-                </div>
-
                 <div className="flex flex-col gap-3">
                   <div className="flex items-start gap-2">
-                    <div className="bubble-tail-left relative bg-blue-600 text-white px-5 py-3 rounded-2xl rounded-bl-none">
+                    <div className="bubble-tail-left relative bg-[#2f4b92] text-white px-5 py-3 rounded-2xl rounded-bl-none">
                       <p className="text-[15px] font-medium leading-relaxed">Lorem ipsum dolor sit amet consectetur </p>
                       <div className="flex items-center gap-1 mt-1 text-white/70 text-[11px]">
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
@@ -47,7 +43,7 @@ const Chatbox = () => {
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg>
                     </button>
                   </div>
-                  <span className="text-gray-400 text-xs font-medium ml-1">Doris Brown</span>
+                  <span className="max-md:hidden text-gray-400 text-xs font-medium ml-1">Doris Brown</span>
                 </div>
               </div>
 
@@ -65,10 +61,7 @@ const Chatbox = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="text-gray-400 text-xs font-medium mr-1">Patricia Smith</span>
-                </div>
-                <div className="flex-shrink-0">
-                  <img src="https://i.pravatar.cc/100?u=patricia" alt="Patricia" className="w-10 h-10 rounded-full" />
+                  <span className="max-md:hidden text-gray-400 text-xs font-medium mr-1">Patricia Smith</span>
                 </div>
               </div>
             </>

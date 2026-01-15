@@ -1,16 +1,17 @@
-import React, { use, useDebugValue, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { showChat } from '../../redux/chatbox/chatBoxSlice.js';
 import { setSelectedUser } from '../../redux/chat/chatSlice.js';
 import { useQuery } from '@tanstack/react-query';
-
 import axios from 'axios';
 import ImageBox from './ImageBox.jsx';
+import { setImageURL, showImage } from '../../redux/imageBox/imageBoxSlice.js';
 
 const UsersList = () => {
 
   const [showScrollBar, setShowScrollBar] = useState(false);
   const dispatch = useDispatch()
+  const isShowImage = useSelector(state => state.image.isShowImage);
 
   const handelScrollBar = (e) => {
     setShowScrollBar(true)
@@ -18,13 +19,17 @@ const UsersList = () => {
       setShowScrollBar(false)
     }, 2000);
   }
+  console.log(isShowImage)
 
   const { data: users, isLoading, isError, error } = useQuery({
     queryKey: ['users'],
-    queryFn: async () => await axios.get(`${ENV.VITE_BASE_URL}/users`).then(res => res.data.data),
+    queryFn: async () => await axios.get(`http://localhost:3000/api/users`).then(res => res.data.data),
   })
 
+
   console.log(users);
+  console.log(error);
+  console.log(isError);
 
 
   const openChat = (user) => {
@@ -32,22 +37,13 @@ const UsersList = () => {
     dispatch(setSelectedUser(user));
   }
 
-  ["Hassan", "Usama", "Sufiyan", "Huzaifa", "Ali", "Murtaza", "Zohan"]
+  const handleShowImage = (e, URL) => {
+    e.stopPropagation()
+    dispatch(setImageURL(URL))
+    dispatch(showImage())
+  }
 
-  let arr = [
-    { name: "Hassan", lastMessage: "Hey! there I'm available" },
-    { name: "Usama ", lastMessage: "Hey! there I'm available" },
-    { name: "Sufiyan ", lastMessage: "Hey! there I'm available" },
-    { name: "Huzaifa ", lastMessage: "Hey! there I'm available" },
-    { name: "Ali ", lastMessage: "Hey! there I'm available" },
-    { name: "Murtaza ", lastMessage: "Hey! there I'm available" },
-    { name: "Zohan ", lastMessage: "Hey! there I'm available" },
-    { name: "Shahzaib Sialkoti", lastMessage: "Hey! there I'm available" },
-    { name: "rafey", lastMessage: "Hey! there I'm available" },
-    { name: "Raza", lastMessage: "Hey! there I'm available" },
-    { name: "Muzzammill", lastMessage: "Hey! there I'm available" }
 
-  ]
 
   return (
     <div onScroll={handelScrollBar} className={`h-full w-full flex flex-col overflow-y-auto hide-scroll ${showScrollBar ? 'users-list' : ''}`}>
@@ -58,12 +54,12 @@ const UsersList = () => {
         users?.map((user, index) => (
           <div onClick={() => openChat(user)} key={index} className='px-3 py-2 min-h-[70px] w-full flex items-center hover:bg-slate-200/50 dark:hover:bg-gray-700/50 active:bg-slate-200/50 dark:active:bg-gray-700/50  cursor-pointer '>
             <div className='h-full w-[55px] flex justify-center items-center'>
-              <div className='flex justify-center items-center'>
+              <div onClick={(e) => handleShowImage(e, user.profilePicture)} className='flex justify-center items-center'>
                 {user?.profilePicture ?
                   <div className='h-[45px] w-[45px] '>
                     <img
-                      src={user?.profilePicture} alt=""
-                      className='h-full w-full rounded-full bg-slate-300 dark:bg-gray-800 '
+                      src={user?.profilePicture} alt="profile-picture"
+                      className='h-full w-full object-cover rounded-full bg-slate-300 dark:bg-gray-800 '
                     />
                   </div>
                   :
@@ -80,6 +76,7 @@ const UsersList = () => {
             <div className='h-full w-[50px]'>
 
             </div>
+            {isShowImage && < ImageBox />}
           </div>
 
         )
