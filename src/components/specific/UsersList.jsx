@@ -76,12 +76,12 @@ const UsersList = () => {
             <div className='h-full w-[50px]'>
 
             </div>
-            {isShowImage && < ImageBox />}
           </div>
 
         )
         )
       }
+      {isShowImage && < ImageBox />}
     </div>
   )
 }

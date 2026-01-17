@@ -35,7 +35,7 @@ const ChatBoxNav = () => {
                 <div className={`h-10 w-10 flex justify-center items-center bg-gray-600 rounded-[50%] `}>
                     {user?.profilePicture ?
                         <img src={user?.profilePicture} alt=""
-                            className='h-full rounded-full '
+                            className='h-full rounded-full object-cover'
                         />
                         :
                         <h2 className={`text-white text-[1.3em] font-semibold `}>{user?.fullName[0].toUpperCase()}</h2>
