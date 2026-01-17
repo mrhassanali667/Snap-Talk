@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import ImageBox from './ImageBox.jsx';
 import { setImageURL, showImage } from '../../redux/imageBox/imageBoxSlice.js';
+import ENV from '../../utils/index.js';
 
 const UsersList = () => {
 
