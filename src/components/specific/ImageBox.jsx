@@ -1,16 +1,14 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearImage, hideImage } from '../../redux/imageBox/imageBoxSlice.js'
+import { clearPlaceHolder, hideImage } from '../../redux/imageBox/imageBoxSlice.js'
 
 const ImageBox = () => {
     const dispatch = useDispatch()
-    const [isLoading, setIsLoading] = useState(true)
     const [scale, setScale] = useState(1)
     const imageURL = useSelector(state => state.image.imageURL)
+    const placeHolder = useSelector(state => state.image.placeHolder)
+    const user = useSelector(state => state.chat.selectedUser)
 
-    const handleImageLoad = () => {
-        setIsLoading(false)
-    }
 
     const handleZoomIn = () => {
         setScale(prev => Math.min(prev + 0.25, 3))
@@ -32,25 +30,23 @@ const ImageBox = () => {
             <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-4 animate-fadeIn">
                 <div className="relative bg-neutral-900/90 rounded-lg sm:rounded-2xl overflow-hidden shadow-2xl w-full mx-auto"
                     style={{ maxHeight: '90vh', maxWidth: '95vw' }}>
-                    {isLoading && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-neutral-900/50 backdrop-blur-sm">
-                            <div className="w-8 h-8 sm:w-12 sm:h-12 border-3 sm:border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
+
+                    {imageURL ?
+                        <div className="relative w-full h-full flex items-center justify-center">
+                            <img
+                                src={imageURL}
+                                alt="Extended view"
+                                className="max-h-[80vh] w-auto object-contain transition-transform duration-200 ease-out"
+                                style={{
+                                    transform: `scale(${scale})`,
+                                    maxWidth: '100%',
+                                }}
+                            />
                         </div>
-                    )}
-
-                    <div className="relative w-full h-full flex items-center justify-center">
-                        <img
-                            src={imageURL}
-                            alt="Extended view"
-                            className="max-h-[80vh] w-auto object-contain transition-transform duration-200 ease-out"
-                            style={{
-                                transform: `scale(${scale})`,
-                                maxWidth: '100%',
-                            }}
-                            onLoad={handleImageLoad}
-                        />
-                    </div>
-
+                        : <div className=" flex items-center justify-center">
+                            <h2 className='h-[60vh] w-[60vh] text-[6em] flex justify-center items-center bg-slate-200 dark:bg-blue-950 font-semibold text-zinc-600 dark:text-slate-300'>{placeHolder}</h2>
+                        </div>
+                    }
                     {/* Controls overlay - Mobile optimized */}
                     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4 bg-black/50 px-3 sm:px-6 py-2 rounded-full backdrop-blur-md touch-none">
                         <button
@@ -80,8 +76,8 @@ const ImageBox = () => {
                     <button
                         onClick={(e) => {
                             e.stopPropagation();
-                            dispatch(clearImage())
                             dispatch(hideImage())
+                            dispatch(clearPlaceHolder())
                         }}
                         className="absolute top-2 right-2 sm:top-4 sm:right-4 text-white/70 hover:text-white transition-colors bg-black/30 hover:bg-black/50 rounded-full p-1.5 sm:p-2 touch-manipulation"
                     >

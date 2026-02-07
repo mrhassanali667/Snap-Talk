@@ -5,7 +5,7 @@ import { setSelectedUser } from '../../redux/chat/chatSlice.js';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import ImageBox from './ImageBox.jsx';
-import { setImageURL, showImage } from '../../redux/imageBox/imageBoxSlice.js';
+import { setPlaceHolder, showImage } from '../../redux/imageBox/imageBoxSlice.js';
 import ENV from '../../utils/index.js';
 
 const UsersList = () => {
@@ -24,7 +24,7 @@ const UsersList = () => {
 
   const { data: users, isLoading, isError, error } = useQuery({
     queryKey: ['users'],
-    queryFn: async () => await axios.get(`${ENV.VITE_BASE_URL}/users`).then(res => res.data.data),
+    queryFn: async () => await axios.get(`${ENV.VITE_BASE_URL}/api/users`).then(res => res.data.data),
   })
 
 
@@ -38,10 +38,10 @@ const UsersList = () => {
     dispatch(setSelectedUser(user));
   }
 
-  const handleShowImage = (e, URL) => {
+  const handleShowImage = (e, user) => {
     e.stopPropagation()
-    dispatch(setImageURL(URL))
-    dispatch(showImage())
+    dispatch(setPlaceHolder(user?.fullName?.charAt(0)?.toUpperCase() || user?.username?.charAt(0)?.toUpperCase()))
+    dispatch(showImage(user?.profilePicture))
   }
 
 
@@ -53,9 +53,9 @@ const UsersList = () => {
       </div>
       {
         users?.map((user, index) => (
-          <div onClick={() => openChat(user)} key={index} className='px-3 py-2 min-h-[70px] w-full flex items-center hover:bg-slate-200/50 dark:hover:bg-gray-700/50 active:bg-slate-200/50 dark:active:bg-gray-700/50  cursor-pointer '>
+          <div onClick={() => openChat(user)} key={index} className='px-3 py-2 min-h-[70px] w-full flex items-center hover:bg-slate-200/50 dark:hover:bg-gray-700/30 active:bg-slate-200/50 dark:active:bg-gray-700/50  cursor-pointer '>
             <div className='h-full w-[55px] flex justify-center items-center'>
-              <div onClick={(e) => handleShowImage(e, user.profilePicture)} className='flex justify-center items-center'>
+              <div onClick={(e) => handleShowImage(e, user)} className='flex justify-center items-center'>
                 {user?.profilePicture ?
                   <div className='h-[45px] w-[45px] '>
                     <img
@@ -64,14 +64,14 @@ const UsersList = () => {
                     />
                   </div>
                   :
-                  <div className='h-[45px] w-[45px] flex justify-center items-center rounded-full bg-slate-300 dark:bg-blue-950 '>
-                    <h3 className='text-[1.2em] font-semibold text-zinc-600 dark:text-slate-300'>{user?.fullName?.charAt(0)?.toUpperCase()}</h3>
+                  <div className='h-[45px] w-[45px] flex justify-center items-center rounded-full bg-slate-200 dark:bg-blue-950 '>
+                    <h3 className='text-[1.2em] font-semibold text-zinc-600 dark:text-slate-300'>{user?.fullName?.charAt(0)?.toUpperCase() || user?.username?.charAt(0)?.toUpperCase()}</h3>
                   </div>
                 }
               </div>
             </div>
             <div className='h-full w-auto grow flex flex-col px-2 py-1'>
-              <h3 className=' dark:text-slate-100 text-zinc-700 font-semibold'>{user?.fullName} </h3>
+              <h3 className=' dark:text-slate-100 text-zinc-700 font-semibold'>{user?.fullName || user?.username} </h3>
               <p className='text-[0.9em] dark:text-slate-400  text-zinc-500 font-semibold truncate'>{user?.about}</p>
             </div>
             <div className='h-full w-[50px]'>

@@ -2,30 +2,34 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     isShowImage: false,
-    imageURL: ''
+    imageURL: null,
+    placeHolder: '',
 }
 
 export const imageSlice = createSlice({
     name: 'image',
     initialState,
     reducers: {
-        showImage: (state) => {
+        showImage: (state, actions) => {
             state.isShowImage = true
+            state.imageURL = actions.payload
 
         },
-        hideImage: (state) => {
+        hideImage: (state, actions) => {
             state.isShowImage = false
+            state.imageURL = null
         },
-        setImageURL: (state, action) => {
-            state.imageURL = action.payload
+        setPlaceHolder: (state, actions) => {
+            state.placeHolder = actions.payload
         },
-        clearImage: (state) => {
-            state.imageURL = ""
+        clearPlaceHolder: (state) => {
+            state.placeHolder = ''
         }
+
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { showImage, hideImage, setImageURL, clearImage } = imageSlice.actions
+export const { showImage, hideImage, setPlaceHolder, clearPlaceHolder } = imageSlice.actions
 
 export default imageSlice.reducer

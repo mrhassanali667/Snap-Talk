@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { use, useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,16 +17,27 @@ import Profile from './components/layout/Profile.jsx';
 import Groups from './components/layout/Groups.jsx';
 import axios from 'axios';
 import ENV from './utils/index.js';
-
+import { io } from 'socket.io-client';
 
 function App() {
+  const socket = useMemo(() => io(ENV.VITE_BASE_URL, { withCredentials: true }), []);
   const dispatch = useDispatch()
   const user = useSelector((state) => state.auth.user)
+
+  useEffect(() => {
+
+    socket.on("connect", () => {
+      console.log("Connected to socket server with ID:", socket.id);
+    });
+
+  }, [user]);
+
+
 
   const { data: userData, error: userError, isLoading, } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      const res = await axios.get(`${ENV.VITE_BASE_URL}/auth/user`, { withCredentials: true });
+      const res = await axios.get(`${ENV.VITE_BASE_URL}/api/auth/user`, { withCredentials: true });
       return res.data.user;
     },
     retry: 0,
@@ -41,6 +52,7 @@ function App() {
       dispatch(clearUser());
     }
   }, [userData, dispatch]);
+
 
   console.log("Current user from Redux store:", userData);
   console.log("Current user error:", userError);

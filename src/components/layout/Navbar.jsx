@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router'
-import { getRandomDarkColors } from '../../utils/index.js'
+import ENV, { getRandomDarkColors } from '../../utils/index.js'
 import axios from 'axios'
 import { clearUser } from '../../redux/auth/authSlice.js'
 
@@ -13,7 +13,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const logout = () => {
-    axios.post('https://snap-talk-backend-server.vercel.app/api/auth/logout', {}, { withCredentials: true })
+    axios.post(`${ENV.VITE_BASE_URL}/api/auth/logout`, {}, { withCredentials: true })
       .then((response) => {
         console.log('Logout successful:', response.data);
         dispatch(clearUser());
@@ -206,13 +206,13 @@ const Navbar = () => {
 
           }
         </button>
-        <div className={`h-9 w-9 flex justify-center items-center bg-[${colors[Math.floor((Math.random() * 12) + 1)]}] rounded-[50%] border-1`}>
-          {false ?
-            <img src="" alt=""
+        <div className={`h-9 w-9 flex justify-center items-center bg-[${colors[Math.floor((Math.random() * 12) + 1)]}] rounded-[50%] `}>
+          {user?.profilePicture ?
+            <img src={user?.profilePicture} alt=""
               className='h-8 w-8 rounded-[50%]'
             />
             :
-            <h2 className={`text-white `}>{user?.email[0].toUpperCase()}</h2>
+            <h2 className={`text-white `}>{user?.fullName[0]?.toUpperCase() || user?.username[0]?.toUpperCase()}</h2>
           }
         </div>
       </div>

@@ -9,6 +9,7 @@ import { useDebounce } from "use-debounce";
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/auth/authSlice';
+import ENV from '../utils/index.js';
 
 
 
@@ -42,7 +43,7 @@ const Register = () => {
 
     const mutation = useMutation({
         mutationFn: (user) => {
-            return axios.post(`${ENV.VITE_BASE_URL}/auth/register`, { ...user }, { withCredentials: true })
+            return axios.post(`${ENV.VITE_BASE_URL}/api/auth/register`, { ...user }, { withCredentials: true })
         },
     })
 
@@ -54,7 +55,7 @@ const Register = () => {
         queryKey: ["username", debouncedUsername],
         queryFn: async () => {
             console.log(debouncedUsername)
-            const res = await axios.get(`${ENV.VITE_BASE_URL}/users/check-username?username=${debouncedUsername}`, { withCredentials: true });
+            const res = await axios.get(`${ENV.VITE_BASE_URL}/api/users/check-username?username=${debouncedUsername}`, { withCredentials: true });
             return !res?.data?.data?.available;
         },
         // only run when username is long enough (>=6)

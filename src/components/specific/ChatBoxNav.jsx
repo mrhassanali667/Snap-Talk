@@ -9,7 +9,7 @@ const ChatBoxNav = () => {
     const user = useSelector(state => state.chat.selectedUser)
 
     return (
-        <nav className='min-h-[75px] flex justify-between bg-white dark:bg-gray-900 border-b-1 border-gray-700 sticky top-0'>
+        <nav className='min-h-[75px] flex justify-between bg-inherit dark:bg-gray-900 border-b-1 border-gray-700 sticky top-0'>
             <div className='h-full md:px-4 flex items-center gap-1'>
                 {innerWidth < 768 && <span onClick={() => dispatch(hideChat())}>
                     <svg
@@ -32,16 +32,16 @@ const ChatBoxNav = () => {
 
                 </span>
                 }
-                <div className={`h-10 w-10 flex justify-center items-center bg-gray-600 rounded-[50%] `}>
+                <div className={`h-10 w-10 flex justify-center items-center bg-blue-950 rounded-[50%] `}>
                     {user?.profilePicture ?
                         <img src={user?.profilePicture} alt=""
                             className='h-full rounded-full object-cover'
                         />
                         :
-                        <h2 className={`text-white text-[1.3em] font-semibold `}>{user?.fullName[0].toUpperCase()}</h2>
+                        <h2 className={`text-slate-200 text-[1.3em] font-semibold `}>{user?.fullName[0]?.toUpperCase() || user?.username[0]?.toUpperCase()}</h2>
                     }
                 </div>
-                <h2 className='ml-2 text text-zinc-700 font-semibold dark:text-slate-100 public-sans'>{user?.fullName}</h2>
+                <h2 className='ml-2 text text-[1.1em] text-zinc-700 font-semibold dark:text-slate-100 public-sans'>{user?.fullName || user?.username}</h2>
             </div>
             <div className='h-full px-2 flex gap-2 justify-between items-center'>
                 <span>

@@ -36,7 +36,7 @@ const Login = () => {
 
     const mutation = useMutation({
         mutationFn: (user) => {
-            return axios.post(`${ENV.VITE_BASE_URL}/auth/login`, { ...user }, { withCredentials: true })
+            return axios.post(`${ENV.VITE_BASE_URL}/api/auth/login`, { ...user }, { withCredentials: true })
         },
     })
 

@@ -1,16 +1,38 @@
-import React from 'react'
+import React, { useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { hideChat } from '../../redux/chatbox/chatBoxSlice.js'
 import ChatBoxNav from '../specific/ChatBoxNav.jsx'
+import { io } from 'socket.io-client'
+import ENV from '../../utils/index.js'
 
 const Chatbox = () => {
-
+  const socket = useMemo(() => io(ENV.VITE_BASE_URL, { withCredentials: true }), []);
   const dispatch = useDispatch()
   let isShowChat = useSelector(state => state.chat.isShowChat)
   const user = useSelector((state) => state.auth.user)
   const innerWidth = window.innerWidth;
   const selectedUser = useSelector(state => state.chat.selectedUser)
-  console.log("Selected User", selectedUser);
+  const input = useRef(null);
+
+  const sendMessage = (message) => {
+    console.log("Sending message to server:", message);
+    socket.emit("send-message", { message: message, userId: "695ebb92a29de77cfc5b7e74" });
+    socket.emit("getmyrooms");
+  }
+
+
+  socket.on("recieve-message", (data) => {
+    console.log("Message received from server:", data);
+  });
+
+  socket.on("myrooms", (rooms) => {
+    console.log("Rooms for the user:", rooms);
+  });
+
+  const handleCloseChat = () => {
+    dispatch(hideChat());
+  }
+
 
   if (!selectedUser) {
     return (
@@ -32,8 +54,8 @@ const Chatbox = () => {
               <div className="flex items-end gap-3 max-w-md" key={index}>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-start gap-2">
-                    <div className="bubble-tail-left relative bg-[#2f4b92] text-white px-5 py-3 rounded-2xl rounded-bl-none">
-                      <p className="text-[15px] font-medium leading-relaxed">Lorem ipsum dolor sit amet consectetur </p>
+                    <div className="bubble-tail-left relative bg-[#212ff7d3] bg-blue-700/90 text-white px-5 py-3 rounded-2xl rounded-bl-none  ">
+                      <p className="text-[16px] leading-relaxed tracking-wide">Hn bhai kia hal hawal hn </p>
                       <div className="flex items-center gap-1 mt-1 text-white/70 text-[11px]">
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
                         10:00
@@ -53,8 +75,13 @@ const Chatbox = () => {
                     <button className="text-gray-500 mt-1">
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg>
                     </button>
-                    <div className="bubble-tail-right relative bg-[#2D3748] text-white px-5 py-3 rounded-2xl rounded-br-none">
-                      <p className="text-[15px] font-medium leading-relaxed">Good morning, How are you? What about ?</p>
+                    <div className="bubble-tail-right relative bg-[#2D3748] 
+hover:bg-gradient-to-r 
+hover:from-[#2D3748] 
+hover:to-[#4A5568] 
+text-white
+ text-white px-5 py-3 rounded-2xl rounded-br-none">
+                      <p className="text-[16px] font-medium leading-relaxed tracking-wide">bs yrr karam h malik ka  ?</p>
                       <div className="flex items-center gap-1 mt-1 text-white/40 text-[11px]">
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
                         10:02
@@ -72,7 +99,7 @@ const Chatbox = () => {
       </main>
       <footer className='min-h-[55px] flex justify-end items-center w-full bg-white dark:bg-gray-900 border-t-1  dark:border-gray-700 px-2 '>
         <div className='h-full w-full flex items-center'>
-          <input type="text" placeholder='Type a message...' className='w-full grow h-10 px-3 rounded-lg  border-gray-400 outline-none  bg-slate-200 dark:bg-gray-800 text-zinc-800 dark:text-white' />
+          <input ref={input} type="text" onKeyDown={(e) => e.key === "Enter" && sendMessage(input.current.value)} placeholder='Type a message...' className='w-full grow h-10 px-3 rounded-lg  border-gray-400 outline-none  bg-slate-200 dark:bg-gray-800 text-zinc-800 dark:text-white' />
           <span className='h-full w-[45px] flex justify-center items-center '>
             <svg
               className="w-5 h-5 text-blue-500 hover:text-blue-600 cursor-pointer"
@@ -111,7 +138,7 @@ const Chatbox = () => {
               />
             </svg>
           </span>
-          <button >
+          <button onClick={() => sendMessage(input.current.value)}>
             <span className='h-9 w-9 flex justify-center items-center text-white font-semibold rounded-full' >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
