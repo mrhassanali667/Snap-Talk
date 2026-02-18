@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 
-const DropDown = ({ id, isOpen, toggleOpen }) => {
+const DropDown = ({ id, heading, isOpen, toggleOpen }) => {
 
     const [isDropDownOpen, setIsDropDownOpen] = useState(false);
     const user = useSelector((state) => state.auth.user)
@@ -16,7 +16,7 @@ const DropDown = ({ id, isOpen, toggleOpen }) => {
                     onClick={() => toggleOpen(id)}
                 >
                     <div>
-                        <h4 className='font-semibold text-[14px]  '>About</h4>
+                        <h4 className='font-semibold text-[14px]  '>{heading}</h4>
                     </div>
                     <span>
                         <svg

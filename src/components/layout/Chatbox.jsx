@@ -16,13 +16,32 @@ const Chatbox = () => {
 
   const sendMessage = (message) => {
     console.log("Sending message to server:", message);
-    socket.emit("send-message", { message: message, userId: "695ebb92a29de77cfc5b7e74" });
+    input.current.value = "";
+    socket.emit("send-message", {
+      message: {
+        sender: user._id,
+        text: message,
+        messageType: "text",
+        readBy: [
+          {
+            userId: user._id,
+          },
+        ],
+      }, roomId: selectedUser._id
+    }, (res) => {
+      console.log(res)
+    });
     socket.emit("getmyrooms");
   }
 
 
   socket.on("recieve-message", (data) => {
-    console.log("Message received from server:", data);
+    if (data?.error) {
+      console.log("Error from from server:", data?.error);
+    } else {
+      console.log(data)
+    }
+
   });
 
   socket.on("myrooms", (rooms) => {
